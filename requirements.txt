@@ -1,0 +1,12 @@
+# Django is needed to run this Django app
+Django
+
+# gunicorn is required by Heroku to launch the web server
+gunicorn
+
+# django_heroku is included in settings.py. This is used in the heroku activation process for the django app
+django_heroku
+
+# django-bootstrap-v5 NOT bootstrap5, bc pip installs it in heroku deploy, so literally it runs 'pip install django-bootstrap-v5'
+# SO THE NAME MATTERS
+django-bootstrap-v5
