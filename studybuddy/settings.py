@@ -99,10 +99,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'd432h7so8gmbue',
-            'USER': 'vvajvhngogwkxy',
-            'PASSWORD': '59d9a2d7ecd9c6a913c70ba5fc4d98afb1e09c34fa59caf60325d89d6d252d07',
-            'HOST':'ec2-52-204-196-4.compute-1.amazonaws.com',
+            'NAME': 'd8kun1ev2pg6ma',
+            'USER': 'wzsgvouhurcxbn',
+            'PASSWORD': '5b248d72d3ad1289bc24228e07d6e94cbd35ad9d9e3ce1d58aa53ab29cf6d8be',
+            'HOST':'ec2-34-231-183-74.compute-1.amazonaws.com',
             'PORT': '5432',
         }
     }
@@ -142,7 +142,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 4
+SITE_ID = 5
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
