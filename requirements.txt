@@ -10,3 +10,6 @@ django_heroku
 # django-bootstrap-v5 NOT bootstrap5, bc pip installs it in heroku deploy, so literally it runs 'pip install django-bootstrap-v5'
 # SO THE NAME MATTERS
 django-bootstrap-v5
+
+# for Google authentication
+django-allauth
