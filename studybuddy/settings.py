@@ -82,30 +82,30 @@ WSGI_APPLICATION = 'studybuddy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+if 'test' in sys.argv:
+    DATABASES = {
+        'default':{
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-# if 'test' in sys.argv:
-#     DATABASES = {
-#         'default':{
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': 'mydatabase',
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#             'NAME': 'd432h7so8gmbue',
-#             'USER': 'vvajvhngogwkxy',
-#             'PASSWORD': '59d9a2d7ecd9c6a913c70ba5fc4d98afb1e09c34fa59caf60325d89d6d252d07',
-#             'HOST':'ec2-52-204-196-4.compute-1.amazonaws.com',
-#             'PORT': '5432',
-#         }
-#     }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'd432h7so8gmbue',
+            'USER': 'vvajvhngogwkxy',
+            'PASSWORD': '59d9a2d7ecd9c6a913c70ba5fc4d98afb1e09c34fa59caf60325d89d6d252d07',
+            'HOST':'ec2-52-204-196-4.compute-1.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
