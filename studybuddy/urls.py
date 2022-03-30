@@ -22,5 +22,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', views.login, name='login'),
+    path('register/', views.register, name='register'),
+    path('', views.login, name='login'), #EDIT PATHS TO TEMPLATES LATER
+    path('home/', views.home, name="home"),
+    path('profile/', views.profile, name="profile"),
 ]
