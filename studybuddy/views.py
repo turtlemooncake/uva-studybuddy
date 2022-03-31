@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Profile
 from .forms import ProfileForm
-## maybe need to separate out index and home
+
 def home(request):
     return render(request, 'home.html')
 
