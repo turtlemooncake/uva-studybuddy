@@ -8,16 +8,19 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Profile
 from .forms import ProfileForm
+## maybe need to separate out index and home
+def home(request):
+    return render(request, 'home.html')
 
 def login(request):
-    if (request.user.is_authenticated):
+    if request.user.is_authenticated and not (Profile.objects.filter(user_id=request.user.id)).exists():
         return HttpResponseRedirect(reverse('register'))
     return render(request, 'index.html')
 
 
 def register(request):
     form = ProfileForm(request.POST) 
-    if (Profile.objects.filter(user_id=request.user.id)).exists():
+    if Profile.objects.filter(user_id=request.user.id).exists() and request.user.is_authenticated:
         return HttpResponseRedirect(reverse('home'))
 
     if (form.is_valid()):
@@ -41,5 +44,3 @@ def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
     return render(request, 'profile.html', {"user" : theUser})
 
-def home(request):
-    return render(request, 'home.html')

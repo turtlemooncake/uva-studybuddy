@@ -144,7 +144,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 5
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'register'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Internationalization
