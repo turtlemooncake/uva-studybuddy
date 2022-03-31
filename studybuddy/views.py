@@ -44,3 +44,10 @@ def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
     return render(request, 'profile.html', {"user" : theUser})
 
+class ProfileList(generic.ListView):
+    model = Profile
+    context_object_name = 'profileList'
+    template_name = 'findBuddies.html'
+
+    def get_queryset(self):
+        return Profile.objects.all()
