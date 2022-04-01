@@ -40,6 +40,28 @@ def register(request):
        
     return render(request, 'registerProfile.html', context)
 
+
+def session(request):
+    if request.method == 'POST':
+        form = SessionForm(request.POST)
+
+        if form.is_valid():
+            users = request.POST['users']
+            date = request.POST['date']
+            time = request.POST['time']
+            location = request.POST['location']
+            subject = request.POST['subject']
+            request.session.users = users
+            request.session.date = date
+            request.session.time = time
+            request.session.location = location
+            request.session.subject = subject
+            request.session.save()
+    else:
+        form = SessionForm()
+
+    return render(request, 'home.html', {'form': form})
+
 def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
     return render(request, 'profile.html', {"user" : theUser})
