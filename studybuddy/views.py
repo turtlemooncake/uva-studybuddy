@@ -46,17 +46,14 @@ def session(request):
         form = SessionForm(request.POST)
 
         if form.is_valid():
-            users = request.POST['users']
-            date = request.POST['date']
-            time = request.POST['time']
-            location = request.POST['location']
-            subject = request.POST['subject']
-            request.session.users = users
-            request.session.date = date
-            request.session.time = time
-            request.session.location = location
-            request.session.subject = subject
-            request.session.save()
+            session = StudySession()
+            session.users = request.POST.get('users')
+            session.date = request.POST.get('date')
+            session.time = request.POST.get('time')
+            session.location = request.POST.get('location')
+            session.subject = request.POST.get('subject')
+            session.save()
+            return HttpResponseRedirect("/home")
     else:
         form = SessionForm()
 
