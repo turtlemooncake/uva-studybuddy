@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import ProfileForm
 
+
 def home(request):
     return render(request, 'home.html')
 
@@ -33,6 +34,7 @@ def register(request):
         profile.user = request.user
         profile.save()
 
+        #return HttpResponseRedirect(reverse('addCourses'))
     
     context = {
         'form': form
@@ -43,6 +45,10 @@ def register(request):
 def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
     return render(request, 'profile.html', {"user" : theUser})
+
+def addCourses(request):
+    return render(request, 'addCourses.html')
+
 
 class ProfileList(generic.ListView):
     model = Profile
