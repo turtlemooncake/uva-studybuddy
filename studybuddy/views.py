@@ -44,3 +44,5 @@ def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
     return render(request, 'profile.html', {"user" : theUser})
 
+def calendar(request):
+    return render(request, 'calendar.html')

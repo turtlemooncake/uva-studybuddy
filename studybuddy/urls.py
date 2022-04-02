@@ -26,4 +26,5 @@ urlpatterns = [
     path('', views.login, name='login'), #EDIT PATHS TO TEMPLATES LATER
     path('home/', views.home, name="home"),
     path('profile/', views.profile, name="profile"),
+    path('calendar/', views.calendar, name="calendar"),
 ]
