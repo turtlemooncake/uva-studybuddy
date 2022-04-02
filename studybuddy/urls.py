@@ -28,4 +28,5 @@ urlpatterns = [
     path('profile/', views.profile, name="profile"),
     path('buddies/', views.ProfileList.as_view(), name="buddies"),
     path('addCourses/', views.addCourses, name="addCourses"),
+    path('logout', views.logOut, name="logout"),
 ]

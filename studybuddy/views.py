@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Profile, Course
 from .forms import ProfileForm
+from django.contrib.auth import logout
 
 
 def home(request):
@@ -48,12 +49,33 @@ def profile(request):
 
 def addCourses(request):
     allCourses = Course.objects.all() 
+    theUser = Profile.objects.get(user_id=request.user.id)
+    
+    if request.method == 'POST':
+        if 'Filter' in request.POST:
+            allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'])
 
+        if 'Add Course' in request.POST:    
+            if (Course.objects.filter(courseAbbv=request.POST['courseAb']).exists() and Course.objects.filter(courseNumber=request.POST['courseNumb']).exists()): 
+                theUser.courses.add(Course.objects.get(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']))
+                print('course added to current user')
+        
+        print('in post expression')
+    else:
+        allCourses = Course.objects.all()
+    
     context = {
         'allCourses' : allCourses
     }
+    
     return render(request, 'addCourses.html', context)
 
+def logOut(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
+    logout(request)
+    
+    return render(request, 'index.html')
 
 class ProfileList(generic.ListView):
     model = Profile
