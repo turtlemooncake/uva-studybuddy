@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django import forms 
+from django.contrib import messages
 
 from .models import Profile, Course
 from .forms import ProfileForm
@@ -50,7 +52,8 @@ def profile(request):
 def addCourses(request):
     allCourses = Course.objects.all() 
     theUser = Profile.objects.get(user_id=request.user.id)
-    
+    courseValid = True
+
     if request.method == 'POST':
         if 'Filter' in request.POST:
             allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'])
@@ -59,13 +62,16 @@ def addCourses(request):
             if (Course.objects.filter(courseAbbv=request.POST['courseAb']).exists() and Course.objects.filter(courseNumber=request.POST['courseNumb']).exists()): 
                 theUser.courses.add(Course.objects.get(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']))
                 print('course added to current user')
-        
+                courseValid = True
+            else:
+                courseValid = False
         print('in post expression')
     else:
         allCourses = Course.objects.all()
     
     context = {
-        'allCourses' : allCourses
+        'allCourses' : allCourses,
+        'courseValid' : courseValid
     }
     
     return render(request, 'addCourses.html', context)

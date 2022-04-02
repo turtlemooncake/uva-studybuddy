@@ -11,6 +11,9 @@
         Course Number: <input name="courseNumb" />
         <!-- <input type="submit" value="Filter on Abbv" name="Filter" /> -->
         <input type="submit" value="Add Course" name="Add Course" />
+        {% if not courseValid%}
+        <p>Course not found! Try again please.</p>
+        {% endif %}
     </form>
     {% for i in allCourses %}
     <li>
