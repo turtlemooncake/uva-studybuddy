@@ -6,7 +6,7 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
-from .models import Profile
+from .models import Profile, Course
 from .forms import ProfileForm
 
 
@@ -34,7 +34,7 @@ def register(request):
         profile.user = request.user
         profile.save()
 
-        #return HttpResponseRedirect(reverse('addCourses'))
+        return HttpResponseRedirect(reverse('addCourses'))
     
     context = {
         'form': form
@@ -47,7 +47,12 @@ def profile(request):
     return render(request, 'profile.html', {"user" : theUser})
 
 def addCourses(request):
-    return render(request, 'addCourses.html')
+    allCourses = Course.objects.all() 
+
+    context = {
+        'allCourses' : allCourses
+    }
+    return render(request, 'addCourses.html', context)
 
 
 class ProfileList(generic.ListView):

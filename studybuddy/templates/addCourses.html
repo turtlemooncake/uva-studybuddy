@@ -4,4 +4,14 @@
 
 <body>
     <h2>List of UVA Courses</h2>
+    <form method="POST">
+        {% csrf_token %}
+        CourseName: <input name="courseName" />
+        <input type="submit" value="Add Course" />
+    </form>
+    {% for i in allCourses %}
+    <li>
+        {{i.courseTitle}}
+    </li>
+    {% endfor %}
 </body>
