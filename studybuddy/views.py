@@ -83,10 +83,19 @@ def logOut(request):
     
     return render(request, 'index.html')
 
-class ProfileList(generic.ListView):
-    model = Profile
-    context_object_name = 'profileList'
-    template_name = 'findBuddies.html'
+def findBuddies(request):
+    allProfiles = Profile.objects.all()
 
-    def get_queryset(self):
-        return Profile.objects.all()
+    context = {
+        'allProfiles' : allProfiles
+    }
+    return render(request, 'findBuddies.html', context)
+
+
+# class ProfileList(generic.ListView):
+#     model = Profile
+#     context_object_name = 'profileList'
+#     template_name = 'findBuddies.html'
+
+#     def get_queryset(self):
+#         return Profile.objects.all()

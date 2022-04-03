@@ -5,7 +5,7 @@
 <body>
     <div class="d-flex justify-content-center">
         <ul>
-            {% for buddy in profileList %} <!--this is name of context_object_name from the dplist view-->
+            {% for buddy in allProfiles %} <!--this is name of context_object_name from the dplist view-->
             <li>
                 {{buddy.user.username}}, {{buddy.about}}, {{buddy.major}}
             </li>
