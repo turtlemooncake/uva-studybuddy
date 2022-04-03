@@ -3,11 +3,21 @@
 <h1>Find Buddies</h1>
 
 <body>
+    <form method="POST">
+        {% csrf_token %}
+        Course Abbreviation: <input name="courseAb" />
+        Course Number: <input name="courseNumb" />
+        <input type="submit" value="Filter Buddies" name="Find Buddy" />
+        <input type="submit" value="Reset Search" name="Reset Search" />
+    </form>
     <div class="d-flex justify-content-center">
         <ul>
             {% for buddy in allProfiles %} <!--this is name of context_object_name from the dplist view-->
             <li>
-                {{buddy.user.username}}, {{buddy.about}}, {{buddy.major}}
+                {{buddy.user.username}}, {{buddy.about}}, {{buddy.major}} Classes:
+                {% for i in buddy.courses.all %}
+                    {{i.courseAbbv}} {{i.courseNumber}}, 
+                {% endfor %}
             </li>
             {% endfor %}
         </ul> 

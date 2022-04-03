@@ -65,6 +65,10 @@ def addCourses(request):
                 courseValid = True
             else:
                 courseValid = False
+        
+        if 'Reset Search' in request.POST:
+            allCourses = Course.objects.all() 
+            
         print('in post expression')
     else:
         allCourses = Course.objects.all()
@@ -86,6 +90,22 @@ def logOut(request):
 def findBuddies(request):
     allProfiles = Profile.objects.all()
 
+    if request.method == 'POST':
+        if 'Reset Search' in request.POST:
+            allProfiles = Profile.objects.all()
+        
+        if 'Find Buddy' in request.POST:
+            filteredProfiles = []
+            for each in allProfiles:
+                if each.courses.filter(courseAbbv=request.POST['courseAb']).exists() or each.courses.filter(courseNumber=request.POST['courseNumb']).exists() :
+                    filteredProfiles.append(each)
+                    print(each.user)
+            
+            allProfiles = filteredProfiles
+
+    else:
+        allProfiles = Profile.objects.all()
+    
     context = {
         'allProfiles' : allProfiles
     }
