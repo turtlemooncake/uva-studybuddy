@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Course
 # Create your tests here.
 
 class ProfileTestCase(TestCase):
@@ -38,3 +38,23 @@ class ProfileTestCase(TestCase):
         myUser = User(first_name='vic', last_name='li')
         profUser = Profile(user=myUser, about='', major='CS')
         self.assertNotEqual(profUser.major, 'Music')
+    
+class CourseTestCase(TestCase):
+    def test_courseCreationAbbv(self):
+        newCourse = Course(courseAbbv='CS', courseNumber='1110', courseTitle='Introduction to Programming', courseTopic='topical')
+        self.assertEqual(newCourse.courseAbbv, 'CS')
+    
+    def test_courseCreationNumber(self):
+        newCourse = Course(courseAbbv='CS', courseNumber='1110', courseTitle='Introduction to Programming', courseTopic='topical')
+        self.assertEqual(newCourse.courseNumber, '1110')
+    
+    def test_courseCreationTitle(self):
+        newCourse = Course(courseAbbv='CS', courseNumber='1110', courseTitle='Introduction to Programming', courseTopic='topical')
+        self.assertEqual(newCourse.courseTitle, 'Introduction to Programming')
+    
+    def test_courseCreationTopice(self):
+        newCourse = Course(courseAbbv='CS', courseNumber='1110', courseTitle='Introduction to Programming', courseTopic='topical')
+        self.assertEqual(newCourse.courseTopic, 'topical')
+    
+    
+    
