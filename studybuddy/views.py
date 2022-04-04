@@ -53,7 +53,7 @@ def session(request):
             session.location = request.POST.get('location')
             session.subject = request.POST.get('subject')
             session.save()
-            return HttpResponseRedirect("/home")
+            return render(request, 'home.html', {'form': form})
     else:
         form = SessionForm()
 
