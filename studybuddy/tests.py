@@ -56,5 +56,24 @@ class CourseTestCase(TestCase):
         newCourse = Course(courseAbbv='CS', courseNumber='1110', courseTitle='Introduction to Programming', courseTopic='topical')
         self.assertEqual(newCourse.courseTopic, 'topical')
     
+
+class ProfileCourseTestCase(TestCase):
+    def setUp(self):
+        Course.objects.create(courseAbbv='CS', courseNumber='1110', courseTitle='Introduction to Programming', courseTopic='topical')
+        Course.objects.create(courseAbbv='CS', courseNumber='2150', courseTitle='Programming and Data Representation', courseTopic='topical')
+        User.objects.create(first_name='vic', last_name='li')
+        Profile.objects.create(user=User.objects.get(first_name='vic'), about='', major='CS')
+
+    def test_addCourseToProfile(self):
+        myProf = Profile.objects.get(major='CS')
+        myCourse = Course.objects.get(courseNumber='2150')
+        myProf.courses.add(myCourse)
+        self.assertEqual(myProf.courses.get(courseNumber='2150'), myCourse)
     
+    def test_NotFoundCourseInProfile(self):
+        myProf = Profile.objects.get(major='CS')
+        myCourse = Course.objects.get(courseNumber='2150')
+        otherCourse = Course.objects.get(courseNumber='1110')
+        myProf.courses.add(myCourse)
+        self.assertNotEqual(myProf.courses.get(courseNumber='2150'), otherCourse)
     
