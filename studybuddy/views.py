@@ -56,7 +56,8 @@ def addCourses(request):
 
     if request.method == 'POST':
         if 'Filter' in request.POST:
-            allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'])
+            if Course.objects.filter(courseAbbv=request.POST['courseAb']).exists(): 
+                allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'])
 
         if 'Add Course' in request.POST:    
             if (Course.objects.filter(courseAbbv=request.POST['courseAb']).exists() and Course.objects.filter(courseNumber=request.POST['courseNumb']).exists()): 
@@ -96,11 +97,21 @@ def findBuddies(request):
         
         if 'Find Buddy' in request.POST:
             filteredProfiles = []
+            foundBoth = False 
+
             for each in allProfiles:
-                if each.courses.filter(courseAbbv=request.POST['courseAb']).exists() or each.courses.filter(courseNumber=request.POST['courseNumb']).exists() :
+                if each.courses.filter(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']).exists():
                     filteredProfiles.append(each)
                     print(each.user)
-            
+                    foundBoth = True
+                    continue 
+                else: 
+                    print("went through else")
+                    if each.courses.filter(courseAbbv=request.POST['courseAb']).exists() and not foundBoth:
+                        filteredProfiles.append(each)
+                    if each.courses.filter(courseNumber=request.POST['courseNumb']).exists() and not foundBoth:
+                        filteredProfiles.append(each)
+
             allProfiles = filteredProfiles
 
     else:
