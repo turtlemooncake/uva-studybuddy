@@ -26,7 +26,7 @@ urlpatterns = [
     path('', views.login, name='login'), #EDIT PATHS TO TEMPLATES LATER
     path('home/', views.home, name="home"),
     path('profile/', views.profile, name="profile"),
-    path('buddies/', views.ProfileList.as_view(), name="buddies"),
+    path('findBuddies/', views.findBuddies, name="buddies"),
     path('addCourses/', views.addCourses, name="addCourses"),
     path('logout', views.logOut, name="logout"),
 ]
