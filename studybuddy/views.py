@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Profile
 from .forms import ProfileForm
+from .forms import SessionForm
 
 def home(request):
     return render(request, 'home.html')
