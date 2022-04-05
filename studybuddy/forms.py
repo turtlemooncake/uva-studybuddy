@@ -5,3 +5,7 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['about', 'major']
+
+# class EventForm(ModelForm):
+#     class Meta:
+#         model = 
