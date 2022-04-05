@@ -1,5 +1,11 @@
 <!doctype html>
 {% include 'headerbar.html' %}
-<h1>{{ user.user }}</h1>
-<h1>{{ user.about }}</h1>
-<h1>{{ user.major }}</h1>
+<h1>Username: {{ user.user }}</h1>
+<h1>About: {{ user.about }}</h1>
+<h1>Major: {{ user.major }}</h1>
+<h1>Courses: </h1>
+{% for i in user.courses.all %}
+<li>
+    {{i.courseAbbv}} {{i.courseNumber}}: {{i.courseTitle}}
+</li>
+{% endfor %}
