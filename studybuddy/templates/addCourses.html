@@ -1,8 +1,11 @@
 <!doctype html>
-{% include 'headerbar.html' %}
-<h1>here is where you will add your courses. users can filter based on class Abbv</h1>
-<h1>add class requires both class abbv and num</h1>
+<!-- I don't know what these links do but the header won't work without them -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
 <body>
+    {% include 'headerbar.html' %}
+    <h1>here is where you will add your courses. users can filter based on class Abbv</h1>
+    <h1>add class requires both class abbv and num</h1>
     <h2>List of UVA Courses</h2>
     <form method="POST">
         {% csrf_token %}

@@ -1,5 +1,11 @@
 <!doctype html>
 {% include 'headerbar.html' %}
+{% load static %}
+
+<!-- https://stackoverflow.com/questions/48682982/django-cannot-find-static-css-files-error-404 -->
+<head>
+    <link rel="stylesheet" href="{% static 'studybuddy/styles/App.css' %}">
+</head>
 
 <h1>you need to create an account dude</h1>
 
