@@ -1,3 +1,7 @@
+# Credentials #
+studybuddy/calendar/quickstart/credentials.json
+studybuddy/calendar/quickstart/token.json
+
 # Django #
 *.log
 *.pot
