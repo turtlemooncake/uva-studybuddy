@@ -51,6 +51,7 @@ def profile(request):
 
 def calendar(request):
     return render(request, 'calendar.html')
+
 def addCourses(request):
     allCourses = Course.objects.all() 
     theUser = Profile.objects.get(user_id=request.user.id)
@@ -124,11 +125,3 @@ def findBuddies(request):
     }
     return render(request, 'findBuddies.html', context)
 
-
-# class ProfileList(generic.ListView):
-#     model = Profile
-#     context_object_name = 'profileList'
-#     template_name = 'findBuddies.html'
-
-#     def get_queryset(self):
-#         return Profile.objects.all()
