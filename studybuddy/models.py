@@ -7,7 +7,7 @@ class Profile(models.Model):
     major = models.CharField(max_length=50)
 
 class StudySession(models.Model):
-    users = models.OneToOneField(User, on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)
     time = models.CharField(max_length=10)
     date = models.CharField(max_length=10)
     location = models.CharField(max_length=50)

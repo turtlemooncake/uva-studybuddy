@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'headerbar.html' %}
+<h1>Create a Study Session Below</h1>
+<h2>Use CTRL+Click to select multiple options.</h2>
+
+
+<main class="flex-shrink-0">
+    <form method="POST">
+        {% csrf_token %}
+        <!--<input name="session" />-->
+        {{ form.as_p }}
+        <input type="submit" value="Update" />
+    </form>
+
+</main>

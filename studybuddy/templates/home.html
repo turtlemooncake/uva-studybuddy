@@ -1,22 +1,3 @@
 <!doctype html>
 {% include 'headerbar.html' %}
 
-<h1>Create a Study Session Below</h1>
-
-
-
-<main class="flex-shrink-0">
-    <form method="POST">
-        {% csrf_token %}
-        <input name="session" />
-        {{ form.as_p }}
-        <input type="submit" value="Update" />
-    </form>
-
-</main>
-
-<h1>{{ session.users }}</h1>
-<h1>{{ session.date }}</h1>
-<h1>{{ session.time }}</h1>
-<h1>{{ session.location }}</h1>
-<h1>{{ session.subject }}</h1>

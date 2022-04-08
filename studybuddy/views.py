@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
 from .models import Profile
+from .models import StudySession
 from .forms import ProfileForm
 from .forms import SessionForm
 
@@ -48,17 +49,19 @@ def session(request):
 
         if form.is_valid():
             session = StudySession()
-            session.users = request.POST.get('users')
+            #session.users = request.user.objects.values_list('username', flat='True')
+            session.save()
+            session.users.add(request.POST.get('users'))
             session.date = request.POST.get('date')
             session.time = request.POST.get('time')
             session.location = request.POST.get('location')
             session.subject = request.POST.get('subject')
             session.save()
-            return render(request, 'home.html', {'form': form})
+            return render(request, 'sessions.html', {'session': session})
     else:
         form = SessionForm()
 
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'newSession.html', {'form': form})
 
 def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
