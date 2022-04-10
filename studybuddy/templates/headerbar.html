@@ -9,12 +9,18 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <ul class="navbar-nav navbar-center">
-          <li class="nav-item px-5" ><a href="http://127.0.0.1:8000" ></a><h2>StuddyBuddy</h2></a></li class="nav-item">
+          <li class="nav-item px-5" ><h2>StuddyBuddy</h2></a></li class="nav-item">
             <li class="nav-item"><a class="nav-link px-3 px-3" href="{% url 'home' %}" color="blue">Home</a>
             </li>
           <li class="nav-item"><a class="nav-link px-3 px-3" href="{% url 'profile' %}" color="blue">Profile</a>
           </li>
+          <li class="nav-item"><a class="nav-link px-3 px-3" href="{% url 'addCourses' %}" color="blue">Add Courses</a>
+          </li>
+          <li class="nav-item"><a class="nav-link px-3 px-3" href="{% url 'buddies' %}" color="blue">Find Buddy</a>
+          </li>
           <li class="nav-item"><a class="nav-link px-3 px-3" href="{% url 'calendar' %}" color="blue">Calender</a>
+          </li>
+            
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle px-3 px-3" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="capitalize">
