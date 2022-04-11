@@ -1,5 +1,5 @@
 from http.client import HTTPResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
@@ -51,7 +51,11 @@ def session(request):
             session = StudySession()
             #session.users = request.user.objects.values_list('username', flat='True')
             session.save()
-            session.users.add(request.POST.get('users'))
+            #session.users.add(request.POST.get('users'))
+            temp = request.POST.getlist('users')
+            #session.m2mfield.add(*temp)
+            session.users.add(*temp)
+            #return HttpResponse(request.POST.items())
             session.date = request.POST.get('date')
             session.time = request.POST.get('time')
             session.location = request.POST.get('location')
