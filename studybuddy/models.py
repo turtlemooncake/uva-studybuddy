@@ -14,3 +14,16 @@ class StudySession(models.Model):
     subject = models.CharField(max_length=10)
 
 
+
+class Course(models.Model):
+    courseAbbv = models.CharField(max_length=5, default='')
+    courseNumber = models.CharField(max_length=5, default='')
+    courseTitle = models.CharField(max_length=120, null=True, default='')
+    courseTopic = models.CharField(max_length=120, null=True, default='')
+
+    def __str__(self):
+        return self.courseAbbv
+
+# class Event(models.Model):
+#     date = models.DateField()
+#     partners = models.ManyToManyField('User', blank=True)

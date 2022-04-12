@@ -1,0 +1,23 @@
+<!doctype html>
+{% include 'headerbar.html' %}
+<h1>here is where you will add your courses. users can filter based on class Abbv</h1>
+<h1>add class requires both class abbv and num</h1>
+<body>
+    <h2>List of UVA Courses</h2>
+    <form method="POST">
+        {% csrf_token %}
+        Course Abbreviation: <input name="courseAb" />
+        <input type="submit" value="Filter" name="Filter" />
+        <input type="submit" value="Reset Search" name="Reset Search" />
+        Course Number: <input name="courseNumb" />
+        <input type="submit" value="Add Course" name="Add Course" />
+        {% if not courseValid%}
+        <p>Course not found! Try again please.</p>
+        {% endif %}
+    </form>
+    {% for i in allCourses %}
+    <li>
+        {{i.courseAbbv}}, {{i.courseNumber}}, {{i.courseTitle}}
+    </li>
+    {% endfor %}
+</body>
