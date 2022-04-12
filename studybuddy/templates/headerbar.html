@@ -23,6 +23,9 @@
         <a href="{% url 'profile' %}" class="nav-link active links">
             Profile
         </a>
+        <a href="{% url 'addCourses' %}" class="nav-link active links">
+            Add Courses
+        </a>
         <a href="{% url 'calendar' %}" class="nav-link active links">
             Calendar
         </a>
@@ -35,6 +38,16 @@
         <a href="{% url 'logout' %}" class="nav-link active links">
             Logout
         </a>
+        <!-- <li class="nav-item dropdown"> -->
+        <div class="dropdown show">
+            <a class="nav-link active links dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+               User: {{ user.username }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="/logout" color="blue">Log Out</a>
+            </div>
+          <!-- </li> -->
+        </div>
     </nav>
 </div>
 <!-- <div>
