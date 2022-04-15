@@ -1,6 +1,6 @@
 from http.client import HTTPResponse
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -66,11 +66,18 @@ def session(request):
             session.location = request.POST.get('location')
             session.subject = request.POST.get('subject')
             session.save()
-            return render(request, 'sessions.html', {'session': session})
+            #return render(request, 'sessions.html', {'session': session})
+            #return HttpResponseRedirect(reverse('my_sessions', args=(), kwargs={'session': session}))
+            #return redirect(my_sessions)
+            return HttpResponseRedirect(reverse('my_sessions'))
+
     else:
         form = SessionForm()
 
     return render(request, 'newSession.html', {'form': form})
+
+def my_sessions(request):
+    return render(request, 'sessions.html', {'session': session})
 
 def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
