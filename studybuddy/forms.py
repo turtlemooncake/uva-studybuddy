@@ -11,6 +11,7 @@ class SessionForm(ModelForm):
     class Meta:
         model = StudySession
         fields = ['users', 'date', 'time', 'location', 'subject']
+        #widgets = {'date': forms.DateInput()}
 # class EventForm(ModelForm):
 #     class Meta:
 #         model = 

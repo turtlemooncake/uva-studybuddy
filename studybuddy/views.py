@@ -78,7 +78,10 @@ def session(request):
 
 def my_sessions(request):
     sessions = StudySession.objects.filter().all()
-    return render(request, 'sessions.html', {'session': session})
+    sessions_dict = {
+        'sessions': sessions
+    }
+    return render(request, 'sessions.html', sessions_dict)
 
 def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
