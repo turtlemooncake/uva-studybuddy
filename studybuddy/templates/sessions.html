@@ -4,6 +4,7 @@
 
 <body>
     {% include 'headerbar.html' %}
+<html lang="en">
 {%if sessions.exists%}
 {%for session in sessions%}
     {% for i in session.users.all %}
