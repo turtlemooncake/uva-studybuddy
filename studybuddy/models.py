@@ -9,6 +9,7 @@ class Profile(models.Model):
 
 class StudySession(models.Model):
     users = models.ManyToManyField(User)
+    #date = models.DateField()
     time = models.CharField(max_length=10)
     date = models.CharField(max_length=10)
     location = models.CharField(max_length=50)

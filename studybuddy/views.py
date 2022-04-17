@@ -51,20 +51,20 @@ def session(request):
         form = SessionForm(request.POST)
 
         if form.is_valid():
-            session = StudySession()
+            new_session = StudySession()
             #session.users = request.user.objects.values_list('username', flat='True')
-            session.save()
+            new_session.save()
             #session.users.add(request.POST.get('users'))
             temp = request.POST.getlist('users')
             #session.m2mfield.add(*temp)
-            session.users.add(*temp)
+            new_session.users.add(*temp)
             #return HttpResponse(request.POST.items())
-            session.date = request.POST.get('date')
-            session.time = request.POST.get('time')
-            session.location = request.POST.get('location')
-            session.subject = request.POST.get('subject')
-            session.save()
-            #return render(request, 'sessions.html', {'session': session})
+            new_session.date = request.POST.get('date')
+            new_session.time = request.POST.get('time')
+            new_session.location = request.POST.get('location')
+            new_session.subject = request.POST.get('subject')
+            new_session.save()
+            #return render(request, 'sessions.html', {'session': new_session})
             #return HttpResponseRedirect(reverse('my_sessions', args=(), kwargs={'session': session}))
             #return redirect(my_sessions)
             return HttpResponseRedirect(reverse('my_sessions'))
@@ -75,7 +75,11 @@ def session(request):
     return render(request, 'newSession.html', {'form': form})
 
 def my_sessions(request):
-    return render(request, 'sessions.html', {'session': session})
+    sessions = StudySession.objects.filter().all()
+    sessions_dict = {
+        'sessions': sessions
+    }
+    return render(request, 'sessions.html', sessions_dict)
 
 def profile(request):
     if not request.user.is_authenticated or not (Profile.objects.filter(user_id=request.user.id)).exists():
