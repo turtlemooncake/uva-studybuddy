@@ -92,6 +92,7 @@ def addCourses(request):
     allCourses = Course.objects.all() 
     theUser = Profile.objects.get(user_id=request.user.id)
     courseValid = True
+    addedSuccess = False
 
     if request.method == 'POST':
         if 'Filter' in request.POST:
@@ -103,8 +104,10 @@ def addCourses(request):
                 theUser.courses.add(Course.objects.get(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']))
                 print('course added to current user')
                 courseValid = True
+                addedSuccess = True
             else:
                 courseValid = False
+                addedSuccess - False
         
         if 'Reset Search' in request.POST:
             allCourses = Course.objects.all() 
@@ -115,7 +118,8 @@ def addCourses(request):
     
     context = {
         'allCourses' : allCourses,
-        'courseValid' : courseValid
+        'courseValid' : courseValid,
+        'addedSuccess' : addedSuccess
     }
     
     return render(request, 'addCourses.html', context)

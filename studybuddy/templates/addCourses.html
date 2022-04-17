@@ -17,6 +17,9 @@
         {% if not courseValid%}
         <p>Course not found! Try again please.</p>
         {% endif %}
+        {% if addedSuccess%}
+        <p>Course Added Successfully!</p>
+        {% endif %}
     </form>
     {% for i in allCourses %}
     <li>
