@@ -4,11 +4,13 @@
 
 <body>
     {% include 'headerbar.html' %}
-<html lang="en">
-{% include 'headerbar.html' %}
 {%if sessions.exists%}
 {%for session in sessions%}
-<h1>{{ session.users.all }}</h1>
+    {% for i in session.users.all %}
+    <h1>
+        {{i.username}}
+    </h1>
+    {% endfor %}
 <h1>{{ session.date }}</h1>
 <h1>{{ session.time }}</h1>
 <h1>{{ session.location }}</h1>
