@@ -8,10 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
 
-from .models import Profile, Course
-from .models import StudySession
-from .forms import ProfileForm
-from .forms import SessionForm
+from .models import Profile, Course, StudySession
+from .forms import EditProfileForm, ProfileForm, SessionForm
 from django.contrib.auth import logout
 
 
@@ -81,6 +79,10 @@ def my_sessions(request):
 
 def profile(request):
     theUser = Profile.objects.get(user_id=request.user.id)
+
+    if request.method == 'POST':
+        return HttpResponseRedirect(reverse('editProfile'))
+
     return render(request, 'profile.html', {"user" : theUser})
 
 def calendar(request):
@@ -159,3 +161,17 @@ def findBuddies(request):
     }
     return render(request, 'findBuddies.html', context)
 
+def editProfile(request):
+    form = EditProfileForm(request.POST)
+    if request.method == 'POST':
+        editedProfile = Profile.objects.get(user_id=request.user.id)
+        if form.is_valid():
+            editedProfile.about = form.cleaned_data['about']
+            editedProfile.major = form.cleaned_data['major']
+            editedProfile.save()
+            return HttpResponseRedirect(reverse('profile'))
+   
+    context = {
+        'form': form
+    }
+    return render(request, 'editProfile.html', context)
