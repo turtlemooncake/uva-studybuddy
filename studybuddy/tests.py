@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import Profile, Course
+from .forms import EditProfileForm
 # Create your tests here.
 
 class ProfileTestCase(TestCase):
@@ -76,4 +77,27 @@ class ProfileCourseTestCase(TestCase):
         otherCourse = Course.objects.get(courseNumber='1110')
         myProf.courses.add(myCourse)
         self.assertNotEqual(myProf.courses.get(courseNumber='2150'), otherCourse)
+
+class ProfileEditTestCase(TestCase):
+    def setUp(self):
+        User.objects.create(first_name='vic', last_name='li')
+        Profile.objects.create(user=User.objects.get(first_name='vic'), about='', major='CS')
     
+    def test_ChangeProfileMajor(self):
+        myProfile = Profile.objects.all().first()
+        myProfile.major = 'Commerce'
+        self.assertEqual('Commerce', myProfile.major)
+    
+    def test_ChangeProfileAbout(self):
+        myProfile = Profile.objects.all().first()
+        myProfile.about = 'this is about'
+        self.assertEqual('this is about', myProfile.about)
+    
+    def test_ChangeProfileBothFieldsTogether(self):
+        myProfile = Profile.objects.all().first()
+        myProfile.major = 'Commerce'
+        myProfile.about = 'this is about'
+        myUser = User(first_name='victoria', last_name='liiii')
+        changedProfile = Profile(user=myUser, about='this is about', major='Commerce')
+        self.assertEqual(changedProfile.major, myProfile.major)
+        self.assertEqual(changedProfile.about, myProfile.about)

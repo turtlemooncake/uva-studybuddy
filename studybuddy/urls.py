@@ -33,5 +33,6 @@ urlpatterns = [
     path('findBuddies/', views.findBuddies, name="buddies"),
     path('addCourses/', views.addCourses, name="addCourses"),
     path('logout/', views.logOut, name="logout"),
+    path('editProfile/', views.editProfile, name="editProfile"),
 ]
 urlpatterns += staticfiles_urlpatterns()

@@ -20,4 +20,8 @@
         {{i.courseAbbv}} {{i.courseNumber}}: {{i.courseTitle}}
     </li>
     {% endfor %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button name="Edit" value="Edit">Edit</button>
+    </form>
 </body>
