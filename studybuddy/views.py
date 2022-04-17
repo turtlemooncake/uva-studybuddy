@@ -78,6 +78,9 @@ def my_sessions(request):
     return render(request, 'sessions.html', {'session': session})
 
 def profile(request):
+    if not request.user.is_authenticated or not (Profile.objects.filter(user_id=request.user.id)).exists():
+        return HttpResponseRedirect(reverse('login'))
+
     theUser = Profile.objects.get(user_id=request.user.id)
 
     if request.method == 'POST':
@@ -89,6 +92,9 @@ def calendar(request):
     return render(request, 'calendar.html')
 
 def addCourses(request):
+    if not request.user.is_authenticated or not (Profile.objects.filter(user_id=request.user.id)).exists():
+        return HttpResponseRedirect(reverse('login'))
+        
     allCourses = Course.objects.all() 
     theUser = Profile.objects.get(user_id=request.user.id)
     courseValid = True
