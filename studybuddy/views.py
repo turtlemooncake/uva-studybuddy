@@ -92,6 +92,8 @@ def addCourses(request):
     allCourses = Course.objects.all() 
     theUser = Profile.objects.get(user_id=request.user.id)
     courseValid = True
+    addedSuccess = False
+    dupCourse = False
 
     if request.method == 'POST':
         if 'Filter' in request.POST:
@@ -100,11 +102,16 @@ def addCourses(request):
 
         if 'Add Course' in request.POST:    
             if (Course.objects.filter(courseAbbv=request.POST['courseAb']).exists() and Course.objects.filter(courseNumber=request.POST['courseNumb']).exists()): 
-                theUser.courses.add(Course.objects.get(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']))
-                print('course added to current user')
+                if not theUser.courses.filter(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']).exists():
+                    theUser.courses.add(Course.objects.get(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']))
+                else:
+                    dupCourse = True
                 courseValid = True
+                addedSuccess = True
             else:
                 courseValid = False
+                addedSuccess - False
+                dupCourse = False
         
         if 'Reset Search' in request.POST:
             allCourses = Course.objects.all() 
@@ -115,7 +122,9 @@ def addCourses(request):
     
     context = {
         'allCourses' : allCourses,
-        'courseValid' : courseValid
+        'courseValid' : courseValid,
+        'addedSuccess' : addedSuccess,
+        'dupCourse' : dupCourse
     }
     
     return render(request, 'addCourses.html', context)
