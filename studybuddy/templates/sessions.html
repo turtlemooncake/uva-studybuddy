@@ -7,6 +7,7 @@
 <html lang="en">
 {%if sessions.exists%}
 {%for session in sessions%}
+{% if user in session.users.all %}
     {% for i in session.users.all %}
     <h1>
         {{i.username}}
@@ -17,6 +18,7 @@
 <h1>{{ session.location }}</h1>
 <h1>{{ session.subject }}</h1>
 </body>
+{%endif%}
 {%endfor%}
 {%else%}
     <h1>No Study Sessions Found!</h1>
