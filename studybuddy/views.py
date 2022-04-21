@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
 
-from .models import Profile, Course, StudySession
-from .forms import EditProfileForm, ProfileForm, SessionForm
+from .models import Profile, Course, StudySession, Message
+from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
 from django.contrib.auth import logout
 
 
@@ -80,6 +80,32 @@ def my_sessions(request):
         'sessions': sessions
     }
     return render(request, 'sessions.html', sessions_dict)
+
+def send_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+
+        if form.is_valid():
+            new_message = Message()
+            new_message.sent_by = request.user.username
+            new_message.save()
+            temp = request.POST.getlist('to')
+            new_message.to.add(*temp)
+            new_message.message = request.POST.get('message')
+            new_message.save()
+            return HttpResponseRedirect(reverse('my_messages'))
+
+    else:
+        form = MessageForm()
+
+    return render(request, 'newMessage.html', {'form': form})
+
+def my_messages(request):
+    messages = Message.objects.filter().all()
+    messages_dict = {
+        'messages': messages
+    }
+    return render(request, 'messages.html', messages_dict)
 
 def profile(request):
     if not request.user.is_authenticated or not (Profile.objects.filter(user_id=request.user.id)).exists():

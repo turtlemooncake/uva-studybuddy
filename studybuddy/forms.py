@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Profile
-from .models import StudySession
+from .models import StudySession, Message
 from django import forms
 
 class ProfileForm(ModelForm):
@@ -12,6 +12,11 @@ class SessionForm(ModelForm):
     class Meta:
         model = StudySession
         fields = ['users', 'date', 'time', 'location', 'subject']
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['to', 'message']
 
 class EditProfileForm(ModelForm):
     class Meta:
