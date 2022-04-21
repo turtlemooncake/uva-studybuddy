@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import Profile
-from .models import StudySession, Message
+from .models import StudySession, MessageTwo
 from django import forms
 
 class ProfileForm(ModelForm):
@@ -15,7 +15,7 @@ class SessionForm(ModelForm):
 
 class MessageForm(ModelForm):
     class Meta:
-        model = Message
+        model = MessageTwo
         fields = ['to', 'message']
 
 class EditProfileForm(ModelForm):

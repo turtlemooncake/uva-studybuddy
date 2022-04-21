@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
 
-from .models import Profile, Course, StudySession, Message
+from .models import Profile, Course, StudySession, MessageTwo
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
 from django.contrib.auth import logout
 
@@ -86,7 +86,7 @@ def send_message(request):
         form = MessageForm(request.POST)
 
         if form.is_valid():
-            new_message = Message()
+            new_message = MessageTwo()
             new_message.sent_by = request.user.username
             new_message.save()
             temp = request.POST.getlist('to')
@@ -101,7 +101,7 @@ def send_message(request):
     return render(request, 'newMessage.html', {'form': form})
 
 def my_messages(request):
-    messages = Message.objects.filter().all()
+    messages = MessageTwo.objects.filter().all()
     messages_dict = {
         'messages': messages
     }

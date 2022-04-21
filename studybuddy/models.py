@@ -15,9 +15,9 @@ class StudySession(models.Model):
     location = models.CharField(max_length=50)
     subject = models.CharField(max_length=10)
 
-class Message(models.Model):
+class MessageTwo(models.Model):
     to = models.ManyToManyField(User)
-    sent_by = models.CharField(max_length=100)
+    sent_by = models.CharField(max_length=100, default='')
     message = models.CharField(max_length=100)
 
 class Course(models.Model):
