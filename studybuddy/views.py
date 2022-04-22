@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
 
-from .models import Profile, Course, StudySession, MessageTwo
+from .models import Profile, Course, StudySession, MessageTwo, Room
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
 from django.contrib.auth import logout
 
@@ -220,3 +220,12 @@ def editProfile(request):
         'form': form
     }
     return render(request, 'editProfile.html', context)
+
+def all_rooms(request):
+    rooms = Room.objects.all()
+    return render(request, 'chatIndex.html', {'rooms': rooms})
+
+
+def room_detail(request, slug):
+    room = Room.objects.get(slug=slug)
+    return render(request, 'room_detail.html', {'room': room})

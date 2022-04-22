@@ -36,5 +36,9 @@ urlpatterns = [
     path('addCourses/', views.addCourses, name="addCourses"),
     path('logout/', views.logOut, name="logout"),
     path('editProfile/', views.editProfile, name="editProfile"),
+    path('chat/', views.all_rooms, name="allrooms"),
+    #path(r'rooms/(?P<slug>[-\w]+)/$', views.room_detail, name="room_detail"),
+    path('rooms/<str:slug>/', views.room_detail, name="room_detail"),
 ]
+
 urlpatterns += staticfiles_urlpatterns()
