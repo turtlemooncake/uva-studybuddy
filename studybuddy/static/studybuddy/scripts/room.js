@@ -46,9 +46,9 @@ $(function() {
       },
       function(data) {
         // Alert the user they have been assigned a random username
-        // username = data.identity;
+        username = data.identity;
         // print(
-        //   "You have been assigned a random username of: " +
+        //   "Welcome: " +
         //     '<span class="me">' +
         //     username +
         //     "</span>",
@@ -69,7 +69,7 @@ $(function() {
         // Extract the room's channel name from the page URL
         let channelName = window.location.pathname.split("/").slice(-2, -1)[0];
       
-        print(`Attempting to join the "${channelName}" chat channel...`);
+        print(`Joined the "${channelName}" chat channel...`);
       
         chatClient
           .getChannelByUniqueName(channelName)
@@ -89,15 +89,17 @@ $(function() {
                 setupChannel(channelName);
               });
           });
+
+
       }
       
     // Set up channel after it has been found / created
     function setupChannel(name) {
     roomChannel.join().then(function(channel) {
-    //   print(
-    //     `Joined channel ${name} as <span class="me"> ${username} </span>.`,
-    //     true
-    //   );
+      print(
+        `Joined channel ${name} as <span class="me"> ${username} </span>.`,
+        true
+      );
       channel.getMessages(30).then(processPage);
     });
   

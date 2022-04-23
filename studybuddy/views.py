@@ -19,6 +19,8 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import ChatGrant 
 
 def home(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
     return render(request, 'home.html')
 
 def login(request):
@@ -52,6 +54,9 @@ def register(request):
 
 
 def session(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     if request.method == 'POST':
         form = SessionForm(request.POST)
 
@@ -80,6 +85,9 @@ def session(request):
     return render(request, 'newSession.html', {'form': form})
 
 def my_sessions(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     sessions = StudySession.objects.filter().all()
     sessions_dict = {
         'sessions': sessions
@@ -87,6 +95,9 @@ def my_sessions(request):
     return render(request, 'sessions.html', sessions_dict)
 
 def send_message(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     if request.method == 'POST':
         form = MessageForm(request.POST)
 
@@ -106,6 +117,9 @@ def send_message(request):
     return render(request, 'newMessage.html', {'form': form})
 
 def my_messages(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     messages = MessageTwo.objects.filter().all()
     messages_dict = {
         'messages': messages
@@ -178,6 +192,9 @@ def logOut(request):
     return render(request, 'index.html')
 
 def findBuddies(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     allProfiles = Profile.objects.all()
 
     if request.method == 'POST':
@@ -212,6 +229,9 @@ def findBuddies(request):
     return render(request, 'findBuddies.html', context)
 
 def editProfile(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     form = EditProfileForm(request.POST)
     if request.method == 'POST':
         editedProfile = Profile.objects.get(user_id=request.user.id)
@@ -227,11 +247,17 @@ def editProfile(request):
     return render(request, 'editProfile.html', context)
 
 def all_rooms(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     rooms = Room.objects.all()
     return render(request, 'chatIndex.html', {'rooms': rooms})
 
 
 def room_detail(request, slug):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     room = Room.objects.get(slug=slug)
     return render(request, 'room_detail.html', {'room': room})
 
