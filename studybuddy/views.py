@@ -64,9 +64,38 @@ def session(request):
             new_session.location = request.POST.get('location')
             new_session.subject = request.POST.get('subject')
             new_session.save()
-            #return render(request, 'sessions.html', {'session': new_session})
-            #return HttpResponseRedirect(reverse('my_sessions', args=(), kwargs={'session': session}))
-            #return redirect(my_sessions)
+            service = build('calendar', 'v3', credentials=creds)
+
+            event = {
+                'summary': request.POST.get('subject') + " Study Session",
+                'location': request.POST.get('location'),
+                'description': 'Let\'s work together on this class!',
+                'start': {
+                    'dateTime': '2015-05-28T09:00:00-07:00',
+                    'timeZone': 'America/New_York',
+                },
+                'end': {
+                    'dateTime': '2015-05-28T17:00:00-07:00',
+                    'timeZone': 'America/New_York',
+                },
+                'recurrence': [
+                    'RRULE:FREQ=DAILY;COUNT=2'
+                ],
+                'attendees': [
+                    {'email': 'lpage@example.com'},
+                    {'email': 'sbrin@example.com'},
+                ],
+                'reminders': {
+                    'useDefault': False,
+                    'overrides': [
+                        {'method': 'email', 'minutes': 24 * 60},
+                        {'method': 'popup', 'minutes': 10},
+                    ],
+                },
+            }
+
+            event = service.events().insert(calendarId='primary', body=event).execute()
+            print('Event created: %s' % (event.get('htmlLink')))
             return HttpResponseRedirect(reverse('my_sessions'))
 
     else:
