@@ -8,21 +8,19 @@
 {%if messages.exists%}
 {%for message in messages%}
     {% if user.username == message.sent_by %}
-        <h1>{{ user.username }}</h1>
+        <h1>From: {{ user.username }} (me) </h1>
+        {% for user in message.to.all %}
+            <h1>To: {{user.username}}</h1>
+        {% endfor %}
+        <h1>Message Contents: </h1>
+        <h3>{{ message.message }}</h3>
+    {%elif user in message.to.all%}
+        <h1>From: {{ message.sent_by }}</h1>
+        <h1>To: {{user.username}}</h1>
+        <h1>Message Contents: </h1>
+        <h3>{{ message.message }}</h3>
     {%endif%}
-<!-- {% if user in message.to.all %}
-    {% for i in message.to.all %}
-    <h1>
-        {{i.username}}
-    </h1>
-    {% endfor %}
-<h1>{{ message.sent_by }}</h1>
-<h1>{{ message.message }}</h1>
-</body>
-{%endif%} -->
-
 {%endfor%}
 {%else%}
     <h1>No Messages Found!</h1>
-
 {%endif%}
