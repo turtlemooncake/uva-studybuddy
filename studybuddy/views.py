@@ -19,8 +19,9 @@ from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import ChatGrant 
 
 def home(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
+    if request.user.is_authenticated and (Profile.objects.filter(user_id=request.user.id)).exists():
+        theUser = Profile.objects.get(user_id = request.user.id)
+        return render(request, 'home.html', {"user" : theUser})
     return render(request, 'home.html')
 
 def login(request):

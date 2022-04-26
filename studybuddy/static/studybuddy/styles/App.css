@@ -17,3 +17,13 @@
 .nav a {
   color: gray;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+.page-title {
+  font-family: 'Inter', sans-serif;
+}
+
+.text-link {
+  color: black;
+  font-family: "Inter", "sans-serif";
+}
