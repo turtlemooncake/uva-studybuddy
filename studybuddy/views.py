@@ -89,7 +89,8 @@ def my_sessions(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    sessions = StudySession.objects.filter().all()
+    sessions = StudySession.objects.filter().all().order_by('-created_date')
+    
     sessions_dict = {
         'sessions': sessions
     }
@@ -121,7 +122,8 @@ def my_messages(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    messages = MessageTwo.objects.filter().all()
+    messages = MessageTwo.objects.filter().all().order_by('-created_date')
+  
     messages_dict = {
         'messages': messages
     }

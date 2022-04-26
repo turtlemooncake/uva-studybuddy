@@ -21,11 +21,12 @@
 <h2> Time: <h3>{{ session.time }}</h3></h2>
 <h2> Location: <h3>{{ session.location }}</h3></h2>
 <h2> Subject: <h3>{{ session.subject }}</h3></h2>
+<h2> Created Date: <h3>{{ session.created_date }}</h3></h2>
 </body>
 </div>
 {% elif user in session.users.all %}
 <div>
-    <h2>From: {{ session.creator.username }}</h2>
+    <h2>From: ({ session.creator.username }}</h2>
     <h2>To: </h2>
     {% for i in session.users.all %}
     <h3>
@@ -36,6 +37,7 @@
 <h2> Time: <h3>{{ session.time }}</h3></h2>
 <h2> Location: <h3>{{ session.location }}</h3></h2>
 <h2> Subject: <h3>{{ session.subject }}</h3></h2>
+<h2> Created Date: <h3>{{ session.created_date }}</h3></h2>
 </body>
 </div>
 {%endif%}
