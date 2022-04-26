@@ -14,6 +14,7 @@ class StudySession(models.Model):
     date = models.CharField(max_length=10)
     location = models.CharField(max_length=50)
     subject = models.CharField(max_length=10)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="creator_of_session")
 
 class MessageTwo(models.Model):
     to = models.ManyToManyField(User)
