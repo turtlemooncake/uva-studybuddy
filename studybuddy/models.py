@@ -9,10 +9,16 @@ class Profile(models.Model):
 
 class StudySession(models.Model):
     users = models.ManyToManyField(User)
+    #date = models.DateField()
     time = models.CharField(max_length=10)
     date = models.CharField(max_length=10)
     location = models.CharField(max_length=50)
     subject = models.CharField(max_length=10)
+
+class MessageTwo(models.Model):
+    to = models.ManyToManyField(User)
+    sent_by = models.CharField(max_length=100, default='')
+    message = models.CharField(max_length=100)
 
 class Course(models.Model):
     courseAbbv = models.CharField(max_length=5, default='')
@@ -22,6 +28,16 @@ class Course(models.Model):
 
     def __str__(self):
         return self.courseAbbv
+
+class Room(models.Model):
+    """Represents chat rooms that users can join"""
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=300)
+    slug = models.CharField(max_length=50)
+
+    def __str__(self):
+        """Returns human-readable representation of the model instance."""
+        return self.name
 
 # class Event(models.Model):
 #     date = models.DateField()

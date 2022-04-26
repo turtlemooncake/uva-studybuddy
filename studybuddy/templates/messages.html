@@ -5,21 +5,19 @@
 <body>
     {% include 'headerbar.html' %}
 <html lang="en">
-{%if sessions.exists%}
-{%for session in sessions%}
-{% if user in session.users.all %}
-    {% for i in session.users.all %}
+{%if messages.exists%}
+{%for message in messages%}
+{% if user in message.to.all %}
+    {% for i in message.to.all %}
     <h1>
         {{i.username}}
     </h1>
     {% endfor %}
-<h1>{{ session.date }}</h1>
-<h1>{{ session.time }}</h1>
-<h1>{{ session.location }}</h1>
-<h1>{{ session.subject }}</h1>
+<h1>{{ message.sent_by }}</h1>
+<h1>{{ message.message }}</h1>
 </body>
 {%endif%}
 {%endfor%}
 {%else%}
-    <h1>No Study Sessions Found!</h1>
+    <h1>No Messages Found!</h1>
 {%endif%}

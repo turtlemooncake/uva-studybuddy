@@ -26,26 +26,35 @@
         <a href="{% url 'addCourses' %}" class="nav-link active links">
             Add Courses
         </a>
-        <a href="{% url 'calendar' %}" class="nav-link active links">
-            Calendar
-        </a>
         <a href="{% url 'buddies' %}" class="nav-link active links">
             Find Buddies
         </a>
-        <a href="{% url 'addCourses' %}" class="nav-link active links">
-            Add Courses
+        <a href="{% url 'session' %}" class="nav-link active links">
+            Make Session
+        </a>
+        <a href="{% url 'my_sessions' %}" class="nav-link active links">
+            My Sessions
+        </a>
+        <a href="{% url 'send_message' %}" class="nav-link active links">
+            Send Message
+        </a>
+        <a href="{% url 'my_messages' %}" class="nav-link active links">
+            My Messages
+        </a>
+        <a href="{% url 'allrooms' %}" class="nav-link active links">
+            Chat Room
         </a>
         <a href="{% url 'logout' %}" class="nav-link active links">
             Logout
         </a>
         <!-- <li class="nav-item dropdown"> -->
-        <div class="dropdown show">
+        <!-- <div class="dropdown show">
             <a class="nav-link active links dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                User: {{ user.username }}
             </a>
             <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
               <a class="dropdown-item" href="/logout" color="blue">Log Out</a>
-            </div>
+            </div> -->
           <!-- </li> -->
         </div>
     </nav>
