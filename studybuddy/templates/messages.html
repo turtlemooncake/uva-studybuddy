@@ -14,11 +14,15 @@
         {% endfor %}
         <h1>Message Contents: </h1>
         <h3>{{ message.message }}</h3>
+        <h1>Date Sent: </h1>
+        <h3>{{ message.created_date }}</h3>
     {%elif user in message.to.all%}
         <h1>From: {{ message.sent_by }}</h1>
         <h1>To: {{user.username}}</h1>
         <h1>Message Contents: </h1>
         <h3>{{ message.message }}</h3>
+        <h1>Date Sent: </h1>
+        <h3>{{ message.created_date }}</h3>
     {%endif%}
 {%endfor%}
 {%else%}

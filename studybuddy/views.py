@@ -122,6 +122,7 @@ def my_messages(request):
         return HttpResponseRedirect(reverse('login'))
 
     messages = MessageTwo.objects.filter().all()
+  
     messages_dict = {
         'messages': messages
     }
