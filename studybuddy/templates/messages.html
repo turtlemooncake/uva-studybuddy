@@ -7,7 +7,10 @@
 <html lang="en">
 {%if messages.exists%}
 {%for message in messages%}
-{% if user in message.to.all %}
+    {% if user.username == message.sent_by %}
+        <h1>{{ user.username }}</h1>
+    {%endif%}
+<!-- {% if user in message.to.all %}
     {% for i in message.to.all %}
     <h1>
         {{i.username}}
@@ -16,8 +19,10 @@
 <h1>{{ message.sent_by }}</h1>
 <h1>{{ message.message }}</h1>
 </body>
-{%endif%}
+{%endif%} -->
+
 {%endfor%}
 {%else%}
     <h1>No Messages Found!</h1>
+
 {%endif%}
