@@ -11,8 +11,17 @@ from django.contrib import messages
 from .models import Profile, Course, StudySession, MessageTwo
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
 from django.contrib.auth import logout
+import datetime
+from datetime import timedelta
+import pytz
+from google.oauth2 import service_account
 
-
+credentials = service_account.Credentials.from_service_account_file("credentials.json")
+scoped_credentials = credentials.with_scopes(["https://www.googleapis.com/auth/calendar"])
+CLIENT_SECRET_FILE = "credentials.json"
+API_NAME = "calendar"
+API_VERSION = "v3"
+SCOPES = ["https://www.googleapis.com/auth/calendar"]
 def home(request):
     return render(request, 'home.html')
 
@@ -64,7 +73,6 @@ def session(request):
             new_session.location = request.POST.get('location')
             new_session.subject = request.POST.get('subject')
             new_session.save()
-            service = build('calendar', 'v3', credentials=creds)
 
             event = {
                 'summary': request.POST.get('subject') + " Study Session",
@@ -93,7 +101,7 @@ def session(request):
                     ],
                 },
             }
-
+            service = build('calendar', 'v3', credentials=credentials)
             event = service.events().insert(calendarId='primary', body=event).execute()
             print('Event created: %s' % (event.get('htmlLink')))
             return HttpResponseRedirect(reverse('my_sessions'))
