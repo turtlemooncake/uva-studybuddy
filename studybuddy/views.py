@@ -10,18 +10,24 @@ from django.contrib import messages
 
 from .models import Profile, Course, StudySession, MessageTwo
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
-from django.contrib.auth import logout
-import datetime
-from datetime import timedelta
-import pytz
-from google.oauth2 import service_account
 
-credentials = service_account.Credentials.from_service_account_file("credentials.json")
-scoped_credentials = credentials.with_scopes(["https://www.googleapis.com/auth/calendar"])
-CLIENT_SECRET_FILE = "credentials.json"
-API_NAME = "calendar"
-API_VERSION = "v3"
-SCOPES = ["https://www.googleapis.com/auth/calendar"]
+from django.contrib.auth import logout
+from apiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+scopes = ['https://www.googleapis.com/auth/calendar']
+flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes=scopes)
+credentials = flow.run_console()
+import pickle
+pickle.dump(credentials, open("token.pkl", "wb"))
+credentials = pickle.load(open("token.pkl", "rb"))
+service = build("calendar", "v3", credentials=credentials)
+result = service.calendarList().list().execute()
+result['items'][0]
+calendar_id = result['items'][0]['id']
+result = service.events().list(calendarId=calendar_id, timeZone="Asia/Kolkata").execute()
+result['items'][0]
+from datetime import datetime, timedelta
+
 def home(request):
     return render(request, 'home.html')
 
@@ -101,7 +107,6 @@ def session(request):
                     ],
                 },
             }
-            service = build('calendar', 'v3', credentials=credentials)
             event = service.events().insert(calendarId='primary', body=event).execute()
             print('Event created: %s' % (event.get('htmlLink')))
             return HttpResponseRedirect(reverse('my_sessions'))
