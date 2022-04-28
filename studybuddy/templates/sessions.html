@@ -7,19 +7,28 @@
 <html lang="en">
 {%if sessions.exists%}
 {%for session in sessions%}
-{% if user in session.users.all %}
-    {% for i in session.users.all %}
-    <h1>
-        {{i.username}}
-    </h1>
-    {% endfor %}
-<h1>{{ session.date }}</h1>
-<h1>{{ session.time }}</h1>
-<h1>{{ session.location }}</h1>
-<h1>{{ session.subject }}</h1>
 </body>
+</div>
+{% elif user in session.users.all %}
+<div>
+    <h2>From: {{ session.creator.username }}</h2>
+    <h2>To: </h2>
+    {% for i in session.users.all %}
+    <h3>
+        {{i.username}}
+    </h3>
+    {% endfor %}
+<h2> Date: <h3>{{ session.date }}</h3></h2>
+<h2> Time: <h3>{{ session.time }}</h3></h2>
+<h2> Location: <h3>{{ session.location }}</h3></h2>
+<h2> Subject: <h3>{{ session.subject }}</h3></h2>
+<h2> Created Date: <h3>{{ session.created_date }}</h3></h2>
+</body>
+</div>
 {%endif%}
+
 {%endfor%}
+
 {%else%}
     <h1>No Study Sessions Found!</h1>
 {%endif%}
