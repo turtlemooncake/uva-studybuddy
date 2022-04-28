@@ -61,8 +61,6 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-CSRF_COOKIE_SECURE = True
-
 ROOT_URLCONF = 'studybuddy.urls'
 
 TEMPLATES = [

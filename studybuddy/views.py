@@ -70,7 +70,6 @@ def session(request):
             #session.m2mfield.add(*temp)
             new_session.users.add(*temp)
             #return HttpResponse(request.POST.items())
-            new_session.creator = request.user
             new_session.date = request.POST.get('date')
             new_session.time = request.POST.get('time')
             new_session.location = request.POST.get('location')
@@ -90,8 +89,7 @@ def my_sessions(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    sessions = StudySession.objects.filter().all().order_by('-created_date')
-    
+    sessions = StudySession.objects.filter().all()
     sessions_dict = {
         'sessions': sessions
     }
@@ -123,8 +121,7 @@ def my_messages(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    messages = MessageTwo.objects.filter().all().order_by('-created_date')
-  
+    messages = MessageTwo.objects.filter().all()
     messages_dict = {
         'messages': messages
     }
@@ -250,45 +247,43 @@ def editProfile(request):
     }
     return render(request, 'editProfile.html', context)
 
-# Add back in if Heroku works again
-#
-# def all_rooms(request):
-#     if not request.user.is_authenticated:
-#         return HttpResponseRedirect(reverse('login'))
+def all_rooms(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
 
-#     rooms = Room.objects.all()
-#     return render(request, 'chatIndex.html', {'rooms': rooms})
+    rooms = Room.objects.all()
+    return render(request, 'chatIndex.html', {'rooms': rooms})
 
 
-# def room_detail(request, slug):
-#     if not request.user.is_authenticated:
-#         return HttpResponseRedirect(reverse('login'))
+def room_detail(request, slug):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
 
-#     room = Room.objects.get(slug=slug)
-#     return render(request, 'room_detail.html', {'room': room})
+    room = Room.objects.get(slug=slug)
+    return render(request, 'room_detail.html', {'room': room})
 
-# def token(request):
-#     identity = request.GET.get('identity', request.user.username)
-#     device_id = request.GET.get('device', 'default')  # unique device ID
+def token(request):
+    identity = request.GET.get('identity', request.user.username)
+    device_id = request.GET.get('device', 'default')  # unique device ID
 
-#     account_sid = settings.TWILIO_ACCOUNT_SID
-#     api_key = settings.TWILIO_API_KEY
-#     api_secret = settings.TWILIO_API_SECRET
-#     chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
+    account_sid = settings.TWILIO_ACCOUNT_SID
+    api_key = settings.TWILIO_API_KEY
+    api_secret = settings.TWILIO_API_SECRET
+    chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
 
-#     token = AccessToken(account_sid, api_key, api_secret, identity=identity)
+    token = AccessToken(account_sid, api_key, api_secret, identity=identity)
 
-#     # Create a unique endpoint ID for the device
-#     endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
+    # Create a unique endpoint ID for the device
+    endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
 
-#     if chat_service_sid:
-#         chat_grant = ChatGrant(endpoint_id=endpoint,
-#                                service_sid=chat_service_sid)
-#         token.add_grant(chat_grant)
+    if chat_service_sid:
+        chat_grant = ChatGrant(endpoint_id=endpoint,
+                               service_sid=chat_service_sid)
+        token.add_grant(chat_grant)
 
-#     response = {
-#         'identity': identity,
-#         'token': token.to_jwt()
-#     }
+    response = {
+        'identity': identity,
+        'token': token.to_jwt()
+    }
 
-#     return JsonResponse(response)
+    return JsonResponse(response)

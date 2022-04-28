@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -15,14 +14,6 @@ class StudySession(models.Model):
     date = models.CharField(max_length=10)
     location = models.CharField(max_length=50)
     subject = models.CharField(max_length=10)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="creator_of_session")
-    created_date = models.DateTimeField('date created', default=timezone.now, blank=True, null=True)
-    
-class MessageTwo(models.Model):
-    to = models.ManyToManyField(User)
-    sent_by = models.CharField(max_length=100, default='')
-    message = models.CharField(max_length=100)
-    created_date = models.DateTimeField('date created', default=timezone.now, blank=True, null=True)
 
 class MessageTwo(models.Model):
     to = models.ManyToManyField(User)
