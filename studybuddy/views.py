@@ -24,6 +24,10 @@ def home(request):
         return render(request, 'home.html', {"user" : theUser})
     return render(request, 'home.html')
 
+def aboutUs(request):
+    return render(request, 'aboutUs.html')
+
+
 def login(request):
     if request.user.is_authenticated and not (Profile.objects.filter(user_id=request.user.id)).exists():
         return HttpResponseRedirect(reverse('register'))

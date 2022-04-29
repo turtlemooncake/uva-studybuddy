@@ -21,9 +21,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
 .page-title {
   font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.subheader {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+.page-text {
+  font-family: 'Inter', sans-serif;
+  font-size: large;
+  margin-left: 25%;
+  margin-right: 25%;
+  font-weight: 600;
 }
 
 .text-link {
   color: black;
   font-family: "Inter", "sans-serif";
+}
+
+.invisible-btn {
+  outline: none;
+  box-shadow: none;
+  background-color: white;
+}
+
+.card {
+  width: 15%;
+  margin-top: 2%;
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-bottom: 2%;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+}
+
+.card-group {
+  margin-bottom: 2%;
 }
