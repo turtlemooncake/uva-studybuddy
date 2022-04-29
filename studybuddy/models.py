@@ -24,11 +24,6 @@ class MessageTwo(models.Model):
     message = models.CharField(max_length=100)
     created_date = models.DateTimeField('date created', default=timezone.now, blank=True, null=True)
 
-class MessageTwo(models.Model):
-    to = models.ManyToManyField(User)
-    sent_by = models.CharField(max_length=100, default='')
-    message = models.CharField(max_length=100)
-
 class Course(models.Model):
     courseAbbv = models.CharField(max_length=5, default='')
     courseNumber = models.CharField(max_length=5, default='')
