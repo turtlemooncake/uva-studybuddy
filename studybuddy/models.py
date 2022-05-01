@@ -4,9 +4,10 @@ from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    about = models.CharField(max_length=300)
+    about = models.TextField(max_length=300)
     major = models.CharField(max_length=50)
     courses = models.ManyToManyField('Course', blank=True)
+    # picture = models.TextField(blank=True, null=True, default="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg")
 
 class StudySession(models.Model):
     users = models.ManyToManyField(User)

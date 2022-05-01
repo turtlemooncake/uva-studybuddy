@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from .models import Profile
 from .models import StudySession, MessageTwo
 from django import forms
+from crispy_forms.helper import FormHelper
 
 class ProfileForm(ModelForm):
     class Meta:
@@ -22,7 +23,10 @@ class EditProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['about', 'major']
-
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False 
     # class Meta:
     #     model = Profile
     #     fields = ['about', 'major']

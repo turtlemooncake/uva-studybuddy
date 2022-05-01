@@ -30,6 +30,9 @@ def aboutUs(request):
 
 def login(request):
     if request.user.is_authenticated and not (Profile.objects.filter(user_id=request.user.id)).exists():
+        # theUser = Profile.objects.get(user_id=request.user.id)
+        # theUser.picture = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+        # theUser.save()
         return HttpResponseRedirect(reverse('register'))
     return render(request, 'index.html')
 
@@ -240,6 +243,8 @@ def editProfile(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
+    theUser = Profile.objects.get(user_id=request.user.id)
+
     form = EditProfileForm(request.POST)
     if request.method == 'POST':
         editedProfile = Profile.objects.get(user_id=request.user.id)
@@ -250,7 +255,8 @@ def editProfile(request):
             return HttpResponseRedirect(reverse('profile'))
    
     context = {
-        'form': form
+        'form': form,
+        'user': theUser
     }
     return render(request, 'editProfile.html', context)
 
