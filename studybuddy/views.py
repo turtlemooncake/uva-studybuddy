@@ -182,6 +182,11 @@ def profile(request):
     return render(request, 'profile.html', {"user" : theUser})
 
 def calendar(request):
+    result = service.calendarList().list().execute()
+    result['items'][0]
+    calendar_id = result['items'][0]['id']
+    result = service.events().list(calendarId=calendar_id, timeZone="Asia/Kolkata").execute()
+    result['items'][0]
     return render(request, 'calendar.html')
 
 def addCourses(request):
