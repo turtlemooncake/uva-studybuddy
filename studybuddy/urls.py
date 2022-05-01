@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import path, include
+from django.urls import path, include, re_path as url
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LogoutView
 
@@ -36,5 +36,10 @@ urlpatterns = [
     path('addCourses/', views.addCourses, name="addCourses"),
     path('logout/', views.logOut, name="logout"),
     path('editProfile/', views.editProfile, name="editProfile"),
+    # path('chat/', views.all_rooms, name="allrooms"),
+    #path(r'rooms/(?P<slug>[-\w]+)/$', views.room_detail, name="room_detail"),
+    # path('chat/<str:slug>/', views.room_detail, name="room_detail"),
+    # url(r'token$', views.token, name="token"), 
 ]
+
 urlpatterns += staticfiles_urlpatterns()
