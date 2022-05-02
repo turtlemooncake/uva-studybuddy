@@ -248,11 +248,17 @@ def editProfile(request):
     form = EditProfileForm(request.POST)
     if request.method == 'POST':
         editedProfile = Profile.objects.get(user_id=request.user.id)
-        if form.is_valid():
-            editedProfile.about = form.cleaned_data['about']
-            editedProfile.major = form.cleaned_data['major']
-            editedProfile.save()
-            return HttpResponseRedirect(reverse('profile'))
+        if 'Update' in request.POST:
+            if form.is_valid():
+                editedProfile.about = form.cleaned_data['about']
+                editedProfile.major = form.cleaned_data['major']
+                editedProfile.save()
+                return HttpResponseRedirect(reverse('profile'))
+        else:
+            print(request.POST)
+            for x in editedProfile.courses.all():
+                if(request.POST.get(x.courseAbbv) and request.POST.get(x.courseAbbv) == x.courseNumber):
+                    editedProfile.courses.remove(x)
    
     context = {
         'form': form,
