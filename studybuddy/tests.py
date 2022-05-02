@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .models import Profile, Course, Room
+from .models import Profile, Course
 from .forms import EditProfileForm
 # Create your tests here.
 
@@ -102,29 +102,3 @@ class ProfileEditTestCase(TestCase):
         self.assertEqual(changedProfile.major, myProfile.major)
         self.assertEqual(changedProfile.about, myProfile.about)
 
-class ChatRoomTest(TestCase):
-    def setUp(self):
-        Room.objects.create(
-            name='general',
-            slug='general chat',
-            description='This is a test room'
-        )
-    
-    def test_RoomName(self):
-        existingRoom = Room.objects.all().first()
-        testRoom = Room(name='general', slug='general chat', description='This is a test room')
-        self.assertEqual(existingRoom.name, testRoom.name)
-    
-    def test_RoomSlug(self):
-        existingRoom = Room.objects.all().first()
-        testRoom = Room(name='general', slug='general chat', description='This is a test room')
-        self.assertEqual(existingRoom.slug, testRoom.slug)
-    
-    def test_RoomDescription(self):
-        existingRoom = Room.objects.all().first()
-        testRoom = Room(name='general', slug='general chat', description='This is a test room')
-        self.assertEqual(existingRoom.description, testRoom.description)
-
-    def test_RoomWrongName(self):
-        existingRoom = Room.objects.all().first()
-        self.assertNotEqual(existingRoom.name, 'not general')

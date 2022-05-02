@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
 
-from .models import Profile, Course, StudySession, MessageTwo, Room
+from .models import Profile, Course, StudySession, MessageTwo
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
 from django.contrib.auth import logout
 
