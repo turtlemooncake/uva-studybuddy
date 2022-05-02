@@ -88,6 +88,8 @@ def session(request):
             new_session.time = request.POST.get('time')
             new_session.location = request.POST.get('location')
             new_session.subject = request.POST.get('subject')
+            new_session.created_date = request.POST.get('created_date')
+            new_session.end_date = request.POST.get('end_date')
             new_session.save()
 
             event = {
@@ -95,20 +97,20 @@ def session(request):
                 'location': request.POST.get('location'),
                 'description': 'Let\'s work together on this class!',
                 'start': {
-                    'dateTime': '2015-05-28T09:00:00-07:00',
+                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
+                    # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
                     'timeZone': 'America/New_York',
                 },
                 'end': {
-                    'dateTime': '2015-05-28T17:00:00-07:00',
+                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
+                    # 'dateTime': '2022-05-28T17:00:00-07:00',
                     'timeZone': 'America/New_York',
                 },
-                'recurrence': [
-                    'RRULE:FREQ=DAILY;COUNT=2'
-                ],
-                'attendees': [
-                    {'email': 'lpage@example.com'},
-                    {'email': 'sbrin@example.com'},
-                ],
+                # 'attendees': [
+                #     {'email': 'lpage@example.com'},
+                #     {'email': 'sbrin@example.com'},
+                # ],
+                # 'attendees': new_session.users,
                 'reminders': {
                     'useDefault': False,
                     'overrides': [
