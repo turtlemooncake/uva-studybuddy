@@ -92,6 +92,12 @@ def session(request):
             new_session.end_date = request.POST.get('end_date')
             new_session.save()
 
+            users = Profile.objects.filter().all()
+            emails = []
+            for member in new_session.users:
+                for person in Profile:
+                    if member.username == person.user.username:
+                        emails.append(person.user.email)
             event = {
                 'summary': request.POST.get('subject') + " Study Session",
                 'location': request.POST.get('location'),
