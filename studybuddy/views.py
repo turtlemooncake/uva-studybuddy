@@ -181,6 +181,25 @@ def addCourses(request):
         
         if 'Reset Search' in request.POST:
             allCourses = Course.objects.all() 
+
+        else:
+            courseA = ""
+            courseN = ""
+            for courses in allCourses:
+                if(request.POST.get(courses.courseAbbv) and request.POST.get(courses.courseAbbv) == courses.courseNumber):
+                    courseA = courses.courseAbbv
+                    courseN = request.POST.get(courseA)
+            if (Course.objects.filter(courseAbbv=courseA).exists() and Course.objects.filter(courseNumber=courseN).exists()): 
+                if not theUser.courses.filter(courseAbbv=courseA, courseNumber=courseN).exists():
+                    theUser.courses.add(Course.objects.get(courseAbbv=courseA, courseNumber=courseN))
+                else:
+                    dupCourse = True
+                courseValid = True
+                addedSuccess = True
+            else:
+                courseValid = False
+                addedSuccess - False
+                dupCourse = False
             
         print('in post expression')
     else:
