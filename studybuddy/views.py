@@ -86,7 +86,8 @@ def session(request):
     if request.method == 'POST':
         form = SessionForm(request.POST)
 
-        if form.is_valid():
+        # if form.is_valid():
+        if 'Send' in request.POST:
             new_session = StudySession()
             #session.users = request.user.objects.values_list('username', flat='True')
             new_session.save()
@@ -96,8 +97,8 @@ def session(request):
             new_session.users.add(*temp)
             #return HttpResponse(request.POST.items())
             new_session.creator = request.user
-            new_session.date = request.POST.get('date')
-            new_session.time = request.POST.get('time')
+            new_session.date = request.POST.get('created_date')[0:10]
+            new_session.time = request.POST.get('created_date')[11:19]
             new_session.location = request.POST.get('location')
             new_session.subject = request.POST.get('subject')
             new_session.created_date = request.POST.get('created_date')
