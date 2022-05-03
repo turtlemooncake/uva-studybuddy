@@ -124,9 +124,9 @@ def my_sessions(request):
 
     if not showPast:
         for s in allSessions:
-            if(s.date >= datetime.now().astimezone().date):
+            if(s.created_date and s.created_date >= datetime.now().astimezone()):
                 sessions.append(s)
-    else:   
+    else:
         sessions = allSessions
 
 
