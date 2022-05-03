@@ -10,6 +10,10 @@ API_NAME = "calendar"
 API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
+def buildCalendar():
+    service = build('calendar', 'v3', credentials=credentials)
+    return service
+
 request_body = {
     "summary": "Study Buddy Meetups"
 }

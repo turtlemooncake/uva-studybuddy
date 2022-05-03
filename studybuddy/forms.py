@@ -12,7 +12,7 @@ class ProfileForm(ModelForm):
 class SessionForm(ModelForm):
     class Meta:
         model = StudySession
-        fields = ['users', 'date', 'time', 'location', 'subject']
+        fields = ['users', 'date', 'time', 'location', 'subject', 'created_date', 'end_date']
 
 class MessageForm(ModelForm):
     class Meta:

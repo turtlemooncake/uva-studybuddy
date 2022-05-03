@@ -11,11 +11,30 @@ from django.contrib import messages
 
 from .models import Profile, Course, StudySession, MessageTwo
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
-from django.contrib.auth import logout
 
+from django.contrib.auth import logout
+from apiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import JsonResponse
 
+from apiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+scopes = ['https://www.googleapis.com/auth/calendar']
+flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes=scopes)
+credentials = flow.run_console()
+import pickle
+pickle.dump(credentials, open("token.pkl", "wb"))
+credentials = pickle.load(open("token.pkl", "rb"))
+service = build("calendar", "v3", credentials=credentials)
+
+result = service.calendarList().list().execute()
+result['items'][0]
+
+calendar_id = result['items'][0]['id']
+result = service.events().list(calendarId=calendar_id, timeZone="America/New_York").execute()
+result['items'][0]
 
 def home(request):
     if request.user.is_authenticated and (Profile.objects.filter(user_id=request.user.id)).exists():
@@ -81,10 +100,45 @@ def session(request):
             new_session.time = request.POST.get('time')
             new_session.location = request.POST.get('location')
             new_session.subject = request.POST.get('subject')
+            new_session.created_date = request.POST.get('created_date')
+            new_session.end_date = request.POST.get('end_date')
             new_session.save()
-            #return render(request, 'sessions.html', {'session': new_session})
-            #return HttpResponseRedirect(reverse('my_sessions', args=(), kwargs={'session': session}))
-            #return redirect(my_sessions)
+
+            users = Profile.objects.filter().all()
+            emails = []
+            for member in new_session.users:
+                for person in Profile:
+                    if member.username == person.user.username:
+                        emails.append(person.user.email)
+            event = {
+                'summary': request.POST.get('subject') + " Study Session",
+                'location': request.POST.get('location'),
+                'description': 'Let\'s work together on this class!',
+                'start': {
+                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
+                    # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
+                    'timeZone': 'America/New_York',
+                },
+                'end': {
+                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
+                    # 'dateTime': '2022-05-28T17:00:00-07:00',
+                    'timeZone': 'America/New_York',
+                },
+                # 'attendees': [
+                #     {'email': 'lpage@example.com'},
+                #     {'email': 'sbrin@example.com'},
+                # ],
+                # 'attendees': new_session.users,
+                'reminders': {
+                    'useDefault': False,
+                    'overrides': [
+                        {'method': 'email', 'minutes': 24 * 60},
+                        {'method': 'popup', 'minutes': 10},
+                    ],
+                },
+            }
+            event = service.events().insert(calendarId='primary', body=event).execute()
+            print('Event created: %s' % (event.get('htmlLink')))
             return HttpResponseRedirect(reverse('my_sessions'))
 
     else:
@@ -180,6 +234,12 @@ def profile(request):
     return render(request, 'profile.html', {"user" : theUser})
 
 def calendar(request):
+    result = service.calendarList().list().execute()
+    result['items'][0]
+    calendar_id = result['items'][0]['id']
+    result = service.events().list(calendarId=calendar_id,
+                                   timeZone="America/New_York").execute()
+    result['items'][0]
     return render(request, 'calendar.html')
 
 def addCourses(request):
