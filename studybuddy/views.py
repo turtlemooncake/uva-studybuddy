@@ -23,9 +23,9 @@ from apiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 scopes = ['https://www.googleapis.com/auth/calendar']
 flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes=scopes)
-credentials = flow.run_console()
+#credentials = flow.run_console()
 import pickle
-pickle.dump(credentials, open("token.pkl", "wb"))
+#pickle.dump(credentials, open("token.pkl", "wb"))
 credentials = pickle.load(open("token.pkl", "rb"))
 service = build("calendar", "v3", credentials=credentials)
 
@@ -115,41 +115,39 @@ def session(request):
                 new_session.end_date = request.POST.get('end_date')
                 new_session.save()
 
-                emails = []
-                for member in new_session.users.all():
-                    for person in Profile.objects.all():
-                        if member.username == person.user.username:
-                            emails.append(person.user.email)
-                event = {
-                    'summary': request.POST.get('subject') + " Study Session",
-                    'location': request.POST.get('location'),
-                    'description': 'Let\'s work together on this class!',
-                    'start': {
-                        'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-04:00',
-                        # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
-                        'timeZone': 'America/New_York',
-                    },
-                    'end': {
-                        'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-04:00',
-                        # 'dateTime': '2022-05-28T17:00:00-07:00',
-                        'timeZone': 'America/New_York',
-                    },
-                    # 'attendees': [
-                    #     {'email': 'lpage@example.com'},
-                    #     {'email': 'sbrin@example.com'},
-                    # ],
-                    'attendees': emails,
-                    'reminders': {
-                        'useDefault': False,
-                        'overrides': [
-                            {'method': 'email', 'minutes': 24 * 60},
-                            {'method': 'popup', 'minutes': 10},
-                        ],
-                    },
-                }
-                service.events().insert(calendarId=calendar_id, body=event).execute()
-                # print('Event created: %s' % (event.get('htmlLink')))
-                return HttpResponseRedirect(reverse('my_sessions'))
+            names = []
+            for member in new_session.users.all():
+                    names.append(member.username)
+            event = {
+                'summary': request.POST.get('subject') + " Study Session",
+                'location': request.POST.get('location'),
+                'description': 'Let\'s work together on this class!',
+                'start': {
+                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
+                    # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
+                    'timeZone': 'America/New_York',
+                },
+                'end': {
+                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
+                    # 'dateTime': '2022-05-28T17:00:00-07:00',
+                    'timeZone': 'America/New_York',
+                },
+                # 'attendees': [
+                #     {'email': 'lpage@example.com'},
+                #     {'email': 'sbrin@example.com'},
+                # ],
+                'attendees': names,
+                'reminders': {
+                    'useDefault': False,
+                    'overrides': [
+                        {'method': 'email', 'minutes': 24 * 60},
+                        {'method': 'popup', 'minutes': 10},
+                    ],
+                },
+            }
+            service.events().insert(calendarId=calendar_id, body=event).execute()
+            # print('Event created: %s' % (event.get('htmlLink')))
+            return HttpResponseRedirect(reverse('my_sessions'))
 
     else:
         form = SessionForm()
