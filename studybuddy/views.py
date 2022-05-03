@@ -145,7 +145,7 @@ def session(request):
                         ],
                     },
                 }
-                service.events().insert(calendarId=calendar_id, body=event).execute()
+                #service.events().insert(calendarId=calendar_id, body=event).execute()
                 # print('Event created: %s' % (event.get('htmlLink')))
                 return HttpResponseRedirect(reverse('my_sessions'))
 
