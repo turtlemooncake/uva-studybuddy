@@ -115,39 +115,39 @@ def session(request):
                 new_session.end_date = request.POST.get('end_date')
                 new_session.save()
 
-            names = []
-            for member in new_session.users.all():
-                    names.append(member.username)
-            event = {
-                'summary': request.POST.get('subject') + " Study Session",
-                'location': request.POST.get('location'),
-                'description': 'Let\'s work together on this class!',
-                'start': {
-                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
-                    # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
-                    'timeZone': 'America/New_York',
-                },
-                'end': {
-                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
-                    # 'dateTime': '2022-05-28T17:00:00-07:00',
-                    'timeZone': 'America/New_York',
-                },
-                # 'attendees': [
-                #     {'email': 'lpage@example.com'},
-                #     {'email': 'sbrin@example.com'},
-                # ],
-                'attendees': names,
-                'reminders': {
-                    'useDefault': False,
-                    'overrides': [
-                        {'method': 'email', 'minutes': 24 * 60},
-                        {'method': 'popup', 'minutes': 10},
-                    ],
-                },
-            }
-            service.events().insert(calendarId=calendar_id, body=event).execute()
-            # print('Event created: %s' % (event.get('htmlLink')))
-            return HttpResponseRedirect(reverse('my_sessions'))
+                names = []
+                for member in new_session.users.all():
+                        names.append(member.username)
+                event = {
+                    'summary': request.POST.get('subject') + " Study Session",
+                    'location': request.POST.get('location'),
+                    'description': 'Let\'s work together on this class!',
+                    'start': {
+                        'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
+                        # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
+                        'timeZone': 'America/New_York',
+                    },
+                    'end': {
+                        'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
+                        # 'dateTime': '2022-05-28T17:00:00-07:00',
+                        'timeZone': 'America/New_York',
+                    },
+                    # 'attendees': [
+                    #     {'email': 'lpage@example.com'},
+                    #     {'email': 'sbrin@example.com'},
+                    # ],
+                    'attendees': names,
+                    'reminders': {
+                        'useDefault': False,
+                        'overrides': [
+                            {'method': 'email', 'minutes': 24 * 60},
+                            {'method': 'popup', 'minutes': 10},
+                        ],
+                    },
+                }
+                service.events().insert(calendarId=calendar_id, body=event).execute()
+                # print('Event created: %s' % (event.get('htmlLink')))
+                return HttpResponseRedirect(reverse('my_sessions'))
 
     else:
         form = SessionForm()

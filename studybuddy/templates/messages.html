@@ -43,29 +43,28 @@
                                 </footer>
                             </div>
                         {%elif user in message.to.all%}
-                            <div class="card">
-                                <div class="card" style="width: 100%;">
-                                    <div class="card-header subheader">  
-                                        <h2>From: {{ message.sent_by }}</h2>
-                                    </div>
-                                    <div class="card-body subheader">
-                                        <ul style="overflow-x: hidden; white-space: nowrap; width: 100%;">
-                                            <li style="display: inline;">
-                                                <h4 class="card-subtitle mb-2 text-muted">Recipients:</h4>
-                                            </li>
-                                            {% for user in message.to.all %}
-                                                <li style="display: inline;">
-                                                    <h4 class="card-subtitle mb-2 text-muted">{{user.username}}</h4>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                        <p class="card-text message-text">{{ message.message }}</p>
-                                    </div>
-                                    <footer class="message-date">
-                                        <h5 class="card-text">{{ message.created_date }}</h5 >
-                                    </footer>
+                            <div class="card" style="width: 100%;">
+                                <div class="card-header subheader">  
+                                    <h2>From: {{ message.sent_by }}</h2>
                                 </div>
-                            {%endif%}
+                                <div class="card-body subheader">
+                                    <ul style="overflow-x: hidden; white-space: nowrap; width: 100%;">
+                                        <li style="display: inline;">
+                                            <h4 class="card-subtitle mb-2 text-muted">Recipients:</h4>
+                                        </li>
+                                        {% for user in message.to.all %}
+                                            <li style="display: inline;">
+                                                <h4 class="card-subtitle mb-2 text-muted">{{user.username}}</h4>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <p class="card-text message-text">{{ message.message }}</p>
+                                </div>
+                                <footer class="message-date">
+                                    <h5 class="card-text">{{ message.created_date }}</h5 >
+                                </footer>
+                            </div>
+                        {%endif%}
                     </ul>
                 {%endfor%}
             </div>
