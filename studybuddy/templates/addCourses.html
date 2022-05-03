@@ -45,9 +45,6 @@
             </button>
         </div>
         <div class="text-center">
-            {% if not courseValid%}
-                <p class="page-text" style="color:red">Course not found! Try again please.</p>
-            {% endif %}
             {% if addedSuccess and not dupCourse %}
                 <p class="page-text" style="color:green">Course Added Successfully! Check it out on your <a href="/profile">profile page</a>!</p>
             {% endif %}

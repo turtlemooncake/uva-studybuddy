@@ -122,12 +122,14 @@ def my_sessions(request):
                 print('There is no such session')
 
 
-    if not showPast:
-        for s in allSessions:
-            if(s.created_date and s.created_date >= datetime.now().astimezone()):
-                sessions.append(s)
-    else:
-        sessions = allSessions
+    # if not showPast:
+    #     for s in allSessions:
+    #         if(s.date >= datetime.now().astimezone().date):
+    #             sessions.append(s)
+    # else:
+    
+    sessions = allSessions
+
 
     sessions_dict = {
         'sessions': sessions,
