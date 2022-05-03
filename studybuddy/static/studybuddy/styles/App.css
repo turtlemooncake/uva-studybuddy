@@ -38,6 +38,23 @@
   font-weight: 600;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+.message-text {
+  font-family: 'Inter', sans-serif;
+  font-size: large;
+  margin-top: 1%;
+  margin-left: 4%;
+  font-weight: 600;
+}
+
+.message-date {
+  font-family: 'Inter', sans-serif;
+  font-size: large;
+  margin-left: 2%;
+  margin-bottom: 1%;
+  font-weight: 600;
+}
+
 .text-link {
   color: black;
   font-family: "Inter", "sans-serif";

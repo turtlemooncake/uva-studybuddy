@@ -1,30 +1,76 @@
 <!DOCTYPE html>
+{% load static %}
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+<head>
+    <link rel="stylesheet" href="{% static 'studybuddy/styles/App.css' %}">
+    <title>
+        Your Messages
+    </title>
+</head>
 
 <body>
     {% include 'headerbar.html' %}
-<html lang="en">
-{%if messages.exists%}
-{%for message in messages%}
-    {% if user.username == message.sent_by %}
-        <h1>From: {{ user.username }} (me) </h1>
-        {% for user in message.to.all %}
-            <h1>To: {{user.username}}</h1>
-        {% endfor %}
-        <h1>Message Contents: </h1>
-        <h3>{{ message.message }}</h3>
-        <h1>Date Sent: </h1>
-        <h3>{{ message.created_date }}</h3>
-    {%elif user in message.to.all%}
-        <h1>From: {{ message.sent_by }}</h1>
-        <h1>To: {{user.username}}</h1>
-        <h1>Message Contents: </h1>
-        <h3>{{ message.message }}</h3>
-        <h1>Date Sent: </h1>
-        <h3>{{ message.created_date }}</h3>
+    <div class="text-center page-title">
+        <h1>Your Messages</h1>
+    </div>
+    {%if messages.exists%}
+        <div class="container">
+            <div class="row" style="width: 100%;">
+                {%for message in messages%}
+                    <ul>
+                        {% if user.username == message.sent_by %}
+                            <div class="card" style="width: 100%;">
+                                <div class="card-header subheader">
+                                    <h2>From: {{ user.username }} (me) </h2>
+                                </div>
+                                <div class="card-body subheader">
+                                    <ul style="overflow-x: hidden; white-space: nowrap; width: 100%;">
+                                        <li style="display: inline;">
+                                            <h4 class="card-subtitle mb-2 text-muted">Recipients:</h4>
+                                        </li>
+                                        {% for user in message.to.all %}
+                                            <li style="display: inline;">
+                                                <h4 class="card-subtitle mb-2 text-muted">{{user.username}}</h4>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <p class="card-text message-text">{{ message.message }}</p>
+                                </div>
+                                <footer class="message-date">
+                                    <h5 class="card-text">{{ message.created_date }}</h5 >
+                                </footer>
+                            </div>
+                        {%elif user in message.to.all%}
+                            <div class="card">
+                                <div class="card" style="width: 100%;">
+                                    <div class="card-header subheader">  
+                                        <h2>From: {{ message.sent_by }}</h2>
+                                    </div>
+                                    <div class="card-body subheader">
+                                        <ul style="overflow-x: hidden; white-space: nowrap; width: 100%;">
+                                            <li style="display: inline;">
+                                                <h4 class="card-subtitle mb-2 text-muted">Recipients:</h4>
+                                            </li>
+                                            {% for user in message.to.all %}
+                                                <li style="display: inline;">
+                                                    <h4 class="card-subtitle mb-2 text-muted">{{user.username}}</h4>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                        <p class="card-text message-text">{{ message.message }}</p>
+                                    </div>
+                                    <footer class="message-date">
+                                        <h5 class="card-text">{{ message.created_date }}</h5 >
+                                    </footer>
+                                </div>
+                            {%endif%}
+                    </ul>
+                {%endfor%}
+            </div>
+        </div>
+    {%else%}
+        <h1>No Messages Found!</h1>
     {%endif%}
-{%endfor%}
-{%else%}
-    <h1>No Messages Found!</h1>
-{%endif%}
+</body>
