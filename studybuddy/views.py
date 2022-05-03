@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
 
-from .models import Profile, Course, StudySession, MessageTwo, Room
+from .models import Profile, Course, StudySession, MessageTwo
 from .forms import EditProfileForm, ProfileForm, SessionForm, MessageForm
 
 from django.contrib.auth import logout
@@ -17,21 +17,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import JsonResponse
-from twilio.jwt.access_token import AccessToken
-from twilio.jwt.access_token.grants import ChatGrant 
-scopes = ['https://www.googleapis.com/auth/calendar']
-flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes=scopes)
-credentials = flow.run_console()
-import pickle
-pickle.dump(credentials, open("token.pkl", "wb"))
-credentials = pickle.load(open("token.pkl", "rb"))
-service = build("calendar", "v3", credentials=credentials)
-result = service.calendarList().list().execute()
-result['items'][0]
-calendar_id = result['items'][0]['id']
-result = service.events().list(calendarId=
-c_ckbu3tqrbi2k276rinrqfo89eo@group.calendar.google.com, timeZone="America/New_York").execute()
-result['items'][0]
 
 def home(request):
     if not request.user.is_authenticated:
@@ -305,46 +290,3 @@ def editProfile(request):
         'form': form
     }
     return render(request, 'editProfile.html', context)
-
-# Add back in if Heroku works again
-#
-# def all_rooms(request):
-#     if not request.user.is_authenticated:
-#         return HttpResponseRedirect(reverse('login'))
-
-#     rooms = Room.objects.all()
-#     return render(request, 'chatIndex.html', {'rooms': rooms})
-
-
-# def room_detail(request, slug):
-#     if not request.user.is_authenticated:
-#         return HttpResponseRedirect(reverse('login'))
-
-#     room = Room.objects.get(slug=slug)
-#     return render(request, 'room_detail.html', {'room': room})
-
-# def token(request):
-#     identity = request.GET.get('identity', request.user.username)
-#     device_id = request.GET.get('device', 'default')  # unique device ID
-
-#     account_sid = settings.TWILIO_ACCOUNT_SID
-#     api_key = settings.TWILIO_API_KEY
-#     api_secret = settings.TWILIO_API_SECRET
-#     chat_service_sid = settings.TWILIO_CHAT_SERVICE_SID
-
-#     token = AccessToken(account_sid, api_key, api_secret, identity=identity)
-
-#     # Create a unique endpoint ID for the device
-#     endpoint = "MyDjangoChatRoom:{0}:{1}".format(identity, device_id)
-
-#     if chat_service_sid:
-#         chat_grant = ChatGrant(endpoint_id=endpoint,
-#                                service_sid=chat_service_sid)
-#         token.add_grant(chat_grant)
-
-#     response = {
-#         'identity': identity,
-#         'token': token.to_jwt()
-#     }
-
-#     return JsonResponse(response)
