@@ -191,6 +191,7 @@ def my_sessions(request):
     else:
         sessions = allSessions
 
+
     sessions_dict = {
         'sessions': sessions,
         'showPast': showPast,
