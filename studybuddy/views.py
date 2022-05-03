@@ -18,6 +18,23 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import JsonResponse
 
+from apiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+scopes = ['https://www.googleapis.com/auth/calendar']
+flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes=scopes)
+credentials = flow.run_console()
+import pickle
+pickle.dump(credentials, open("token.pkl", "wb"))
+credentials = pickle.load(open("token.pkl", "rb"))
+service = build("calendar", "v3", credentials=credentials)
+
+result = service.calendarList().list().execute()
+result['items'][0]
+
+calendar_id = result['items'][0]['id']
+result = service.events().list(calendarId=calendar_id, timeZone="America/New_York").execute()
+result['items'][0]
+
 def home(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
@@ -179,8 +196,7 @@ def calendar(request):
     result = service.calendarList().list().execute()
     result['items'][0]
     calendar_id = result['items'][0]['id']
-    result = service.events().list(calendarId=
-                                   c_ckbu3tqrbi2k276rinrqfo89eo @ group.calendar.google.com,
+    result = service.events().list(calendarId=calendar_id,
                                    timeZone="America/New_York").execute()
     result['items'][0]
     return render(request, 'calendar.html')
