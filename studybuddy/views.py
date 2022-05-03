@@ -230,6 +230,43 @@ def findBuddies(request):
     if request.method == 'POST':
         if 'Reset Search' in request.POST:
             allProfiles = Profile.objects.all()
+
+        if 'Filter Abbr' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.courses.filter(courseAbbv=request.POST['courseAb']).exists():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
+        if 'Filter Num' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.courses.filter(courseNumber=request.POST['courseNumb']).exists():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
+        if 'Filter Name' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.user.first_name.lower() == request.POST['firstName'].lower():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
+        if 'Filter User' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.user.username.lower() == request.POST['user'].lower():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
         
         if 'Find Buddy' in request.POST:
             filteredProfiles = []
