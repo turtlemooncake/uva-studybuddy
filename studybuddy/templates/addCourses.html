@@ -45,6 +45,9 @@
             </button>
         </div>
         <div class="text-center">
+            {% if not validSearch %}
+                <p class="page-text" style="color:red">That's not a valid filter! Try again please.</p>
+            {% endif %}
             {% if not courseValid%}
                 <p class="page-text" style="color:red">Course not found! Try again please.</p>
             {% endif %}

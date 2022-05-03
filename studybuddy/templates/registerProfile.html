@@ -19,11 +19,23 @@
     <div class="text-center page-title">
         <h1>Please create an account</h1>
 
+        {% if dupUser %}
+            <h2 style="color: red;">This username has already been taken, please input a new username</h2>
+        {% endif %}
+
         {% load crispy_forms_tags %}
 
         <form method="POST">
             {% csrf_token %}
             <div class="container">
+                <div class="form-group row justify-content-md-center">
+                    <div class="col-md-auto align-self-center">
+                        <h2>Your Username:</h2>
+                    </div>
+                    <div class="col-md-auto align-self-center">
+                        <input class="form-control" type="text" placeholder="Your username" name="user" />
+                    </div>
+                </div>
                 <div class="form-group row justify-content-md-center">
                     <div class="col-md-auto align-self-center">
                         <h2>About You:</h2>
@@ -41,8 +53,8 @@
                     </div>
                 </div>
             </div>
-            <button name="Update" value="Update" class="btn btn-primary">
-                Update
+            <button name="Update" value="Update" class="btn btn-primary" type="submit">
+                Create Account!
             </button>
         </form>
 

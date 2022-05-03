@@ -18,6 +18,9 @@
         <h4>
             <a href="/findBuddies">View which classmates you share a class with</a>
         </h4>
+        {% if invalidDate %}
+            <h3 style="color: red;">Your start time must be before your end time!</h3>
+        {% endif %}
     </div>
 
     {% load crispy_forms_tags %}

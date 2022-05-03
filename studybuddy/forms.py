@@ -8,6 +8,12 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['about', 'major']
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        # self.helper.form_show_labels = False 
+        self.fields['about'].label = "300 character limit!"
+        self.fields['major'].label = False
 
 class SessionForm(ModelForm):
     class Meta:

@@ -54,6 +54,9 @@
                                             {% for i in session.users.all %}
                                                 <li class="list-group-item subheader spacer">{{i.username}}</li>
                                             {% endfor %}
+                                            {% if user not in session.users.all %}
+                                                <li class="list-group-item subheader spacer">{{user.username}}</li>
+                                            {% endif %}
                                         </ul>
                                         <footer class="subheader">
                                             <button class="btn btn-danger" name="Delete" value={{session.id}} type="submit">

@@ -56,24 +56,29 @@ def login(request):
 
 
 def register(request):
+    dupUser = False
     form = ProfileForm(request.POST) 
     if Profile.objects.filter(user_id=request.user.id).exists() and request.user.is_authenticated:
         return HttpResponseRedirect(reverse('home'))
 
     if (form.is_valid()):
+        print(request.POST['user'])
         preferredName = request.POST['user']
-        request.user.username = preferredName
-        print(request.user.username)
-        request.user.save()
+        try:
+            request.user.username = preferredName
+            request.user.save()
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return HttpResponseRedirect(reverse('profile'))
 
-        profile = form.save(commit=False)
-        profile.user = request.user
-        profile.save()
+        except:
+            dupUser = True
 
-        return HttpResponseRedirect(reverse('addCourses'))
     
     context = {
-        'form': form
+        'form': form,
+        'dupUser': dupUser,
     }
        
     return render(request, 'registerProfile.html', context)
@@ -82,69 +87,74 @@ def register(request):
 def session(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
+    
+    invalidDate = False
 
     if request.method == 'POST':
         form = SessionForm(request.POST)
 
         # if form.is_valid():
         if 'Send' in request.POST:
-            new_session = StudySession()
-            #session.users = request.user.objects.values_list('username', flat='True')
-            new_session.save()
-            #session.users.add(request.POST.get('users'))
-            temp = request.POST.getlist('users')
-            #session.m2mfield.add(*temp)
-            new_session.users.add(*temp)
-            #return HttpResponse(request.POST.items())
-            new_session.creator = request.user
-            new_session.date = request.POST.get('created_date')[0:10]
-            new_session.time = request.POST.get('created_date')[11:19]
-            new_session.location = request.POST.get('location')
-            new_session.subject = request.POST.get('subject')
-            new_session.created_date = request.POST.get('created_date')
-            new_session.end_date = request.POST.get('end_date')
-            new_session.save()
+            if(request.POST.get('created_date') >= request.POST.get('end_date')):
+                invalidDate = True
+            else:
+                new_session = StudySession()
+                #session.users = request.user.objects.values_list('username', flat='True')
+                new_session.save()
+                #session.users.add(request.POST.get('users'))
+                temp = request.POST.getlist('users')
+                #session.m2mfield.add(*temp)
+                new_session.users.add(*temp)
+                #return HttpResponse(request.POST.items())
+                new_session.creator = request.user
+                new_session.date = request.POST.get('created_date')[0:10]
+                new_session.time = request.POST.get('created_date')[11:19]
+                new_session.location = request.POST.get('location')
+                new_session.subject = request.POST.get('subject')
+                new_session.created_date = request.POST.get('created_date')
+                new_session.end_date = request.POST.get('end_date')
+                new_session.save()
 
-            emails = []
-            for member in new_session.users.all():
-                for person in Profile.objects.all():
-                    if member.username == person.user.username:
-                        emails.append(person.user.email)
-            event = {
-                'summary': request.POST.get('subject') + " Study Session",
-                'location': request.POST.get('location'),
-                'description': 'Let\'s work together on this class!',
-                'start': {
-                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-04:00',
-                    # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
-                    'timeZone': 'America/New_York',
-                },
-                'end': {
-                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-04:00',
-                    # 'dateTime': '2022-05-28T17:00:00-07:00',
-                    'timeZone': 'America/New_York',
-                },
-                # 'attendees': [
-                #     {'email': 'lpage@example.com'},
-                #     {'email': 'sbrin@example.com'},
-                # ],
-                'attendees': names,
-                'reminders': {
-                    'useDefault': False,
-                    'overrides': [
-                        {'method': 'email', 'minutes': 24 * 60},
-                        {'method': 'popup', 'minutes': 10},
-                    ],
-                },
-            }
-            service.events().insert(calendarId=calendar_id, body=event).execute()
-            # print('Event created: %s' % (event.get('htmlLink')))
-            return HttpResponseRedirect(reverse('my_sessions'))
+                emails = []
+                for member in new_session.users.all():
+                    for person in Profile.objects.all():
+                        if member.username == person.user.username:
+                            emails.append(person.user.email)
+                event = {
+                    'summary': request.POST.get('subject') + " Study Session",
+                    'location': request.POST.get('location'),
+                    'description': 'Let\'s work together on this class!',
+                    'start': {
+                        'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-04:00',
+                        # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
+                        'timeZone': 'America/New_York',
+                    },
+                    'end': {
+                        'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-04:00',
+                        # 'dateTime': '2022-05-28T17:00:00-07:00',
+                        'timeZone': 'America/New_York',
+                    },
+                    # 'attendees': [
+                    #     {'email': 'lpage@example.com'},
+                    #     {'email': 'sbrin@example.com'},
+                    # ],
+                    'attendees': emails,
+                    'reminders': {
+                        'useDefault': False,
+                        'overrides': [
+                            {'method': 'email', 'minutes': 24 * 60},
+                            {'method': 'popup', 'minutes': 10},
+                        ],
+                    },
+                }
+                service.events().insert(calendarId=calendar_id, body=event).execute()
+                # print('Event created: %s' % (event.get('htmlLink')))
+                return HttpResponseRedirect(reverse('my_sessions'))
 
     else:
         form = SessionForm()
 
-    return render(request, 'newSession.html', {'form': form})
+    return render(request, 'newSession.html', {'form': form, 'invalidDate': invalidDate,})
 
 def my_sessions(request):
     showPast = False
@@ -251,14 +261,22 @@ def addCourses(request):
     courseValid = True
     addedSuccess = False
     dupCourse = False
+    validSearch = True
 
     if request.method == 'POST':
         if 'Filter' in request.POST:
             if Course.objects.filter(courseAbbv=request.POST['courseAb']).exists(): 
-                allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'])
+                if Course.objects.filter(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']).exists(): 
+                    allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb'])
+                elif not (request.POST['courseNumb'] == ''):
+                    validSearch = False
+                else:
+                    allCourses = Course.objects.filter(courseAbbv=request.POST['courseAb'])
+            else:
+                validSearch = False
 
-        if 'Add Course' in request.POST:    
-            if (Course.objects.filter(courseAbbv=request.POST['courseAb']).exists() and Course.objects.filter(courseNumber=request.POST['courseNumb']).exists()): 
+        elif 'Add Course' in request.POST:    
+            if (Course.objects.filter(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']).exists()): 
                 if not theUser.courses.filter(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']).exists():
                     theUser.courses.add(Course.objects.get(courseAbbv=request.POST['courseAb'], courseNumber=request.POST['courseNumb']))
                 else:
@@ -267,10 +285,10 @@ def addCourses(request):
                 addedSuccess = True
             else:
                 courseValid = False
-                addedSuccess - False
+                addedSuccess = False
                 dupCourse = False
         
-        if 'Reset Search' in request.POST:
+        elif 'Reset Search' in request.POST:
             allCourses = Course.objects.all() 
 
         else:
@@ -289,7 +307,7 @@ def addCourses(request):
                 addedSuccess = True
             else:
                 courseValid = False
-                addedSuccess - False
+                addedSuccess = False
                 dupCourse = False
             
         print('in post expression')
@@ -300,7 +318,8 @@ def addCourses(request):
         'allCourses' : allCourses,
         'courseValid' : courseValid,
         'addedSuccess' : addedSuccess,
-        'dupCourse' : dupCourse
+        'dupCourse' : dupCourse,
+        'validSearch' : validSearch,
     }
     
     return render(request, 'addCourses.html', context)
