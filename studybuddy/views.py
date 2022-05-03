@@ -29,7 +29,8 @@ service = build("calendar", "v3", credentials=credentials)
 result = service.calendarList().list().execute()
 result['items'][0]
 calendar_id = result['items'][0]['id']
-result = service.events().list(calendarId=calendar_id, timeZone="Asia/Kolkata").execute()
+result = service.events().list(calendarId=
+c_ckbu3tqrbi2k276rinrqfo89eo@group.calendar.google.com, timeZone="America/New_York").execute()
 result['items'][0]
 
 def home(request):
@@ -193,7 +194,9 @@ def calendar(request):
     result = service.calendarList().list().execute()
     result['items'][0]
     calendar_id = result['items'][0]['id']
-    result = service.events().list(calendarId=calendar_id, timeZone="Asia/Kolkata").execute()
+    result = service.events().list(calendarId=
+                                   c_ckbu3tqrbi2k276rinrqfo89eo @ group.calendar.google.com,
+                                   timeZone="America/New_York").execute()
     result['items'][0]
     return render(request, 'calendar.html')
 
