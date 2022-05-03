@@ -105,10 +105,9 @@ def session(request):
             new_session.end_date = request.POST.get('end_date')
             new_session.save()
 
-            users = list(Profile.objects.filter().all())
             emails = []
-            for member in new_session.users:
-                for person in Profile:
+            for member in new_session.users.all():
+                for person in Profile.objects.all():
                     if member.username == person.user.username:
                         emails.append(person.user.email)
             event = {
@@ -116,12 +115,12 @@ def session(request):
                 'location': request.POST.get('location'),
                 'description': 'Let\'s work together on this class!',
                 'start': {
-                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
+                    'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-04:00',
                     # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
                     'timeZone': 'America/New_York',
                 },
                 'end': {
-                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
+                    'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-04:00',
                     # 'dateTime': '2022-05-28T17:00:00-07:00',
                     'timeZone': 'America/New_York',
                 },
