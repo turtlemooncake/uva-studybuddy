@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
@@ -94,13 +95,45 @@ def session(request):
     return render(request, 'newSession.html', {'form': form})
 
 def my_sessions(request):
+    showPast = False
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    sessions = StudySession.objects.filter().all().order_by('-created_date')
+    theUser = Profile.objects.get(user_id=request.user.id)
+    allSessions = list(StudySession.objects.filter().all().order_by('created_date'))
+    sessions = []
     
+    if request.method == 'POST':
+        if 'View Past' in request.POST:
+            showPast = True
+        if 'Hide Past' in request.POST:
+            showPast = False
+        if 'Delete' in request.POST:
+            id = request.POST.get('Delete')
+            print(id)
+            try:
+                selectedSession = StudySession.objects.filter(id=id)[0]
+                if selectedSession.creator == theUser.user:
+                    try:
+                        selectedSession.delete()
+                    except:
+                        print('This record does not exist')
+                else:
+                    selectedSession.users.remove(theUser.user)
+            except:
+                print('There is no such session')
+
+
+    if not showPast:
+        for s in allSessions:
+            if(s.created_date and s.created_date >= datetime.now().astimezone()):
+                sessions.append(s)
+    else:
+        sessions = allSessions
+
     sessions_dict = {
-        'sessions': sessions
+        'sessions': sessions,
+        'showPast': showPast,
     }
     return render(request, 'sessions.html', sessions_dict)
 
