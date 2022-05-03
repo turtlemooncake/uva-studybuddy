@@ -35,7 +35,7 @@ def login(request):
         # theUser.picture = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
         # theUser.save()
         return HttpResponseRedirect(reverse('register'))
-    return render(request, 'index.html')
+    return HttpResponseRedirect(reverse('home'))
 
 
 def register(request):
