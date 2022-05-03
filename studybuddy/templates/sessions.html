@@ -14,14 +14,13 @@
 <body>
     {% include 'headerbar.html' %}
     <div class="text-center page-title">
-        <h1>All of Your Sessions!</h1>
-        <!-- {%if not showPast%}
+        {%if not showPast%}
             <h1>Your Upcoming Sessions!</h1>
         {%elif showPast%}
             <h1>All of Your Sessions!</h1>
-        {%endif%} -->
+        {%endif%}
     </div>
-    <!-- <form method="POST" class="form-inline spacer justify-content-center text-center">
+    <form method="POST" class="form-inline spacer justify-content-center text-center">
         {% csrf_token %}
         {%if not showPast%}
             <button class="btn btn-primary mb-2" type="submit" value="View Past" name="View Past">
@@ -32,7 +31,7 @@
                 Hide Past Sessions
             </button>
         {%endif%}
-    </form> -->
+    </form>
     
     {%if sessions%}
         <form method="POST">
