@@ -1,21 +1,58 @@
 <!DOCTYPE html>
+{% load static %}
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+<head>
+    <link rel="stylesheet" href="{% static 'studybuddy/styles/App.css' %}">
+    <title>
+        Send a Message!
+    </title>
+</head>
 
 <body>
     {% include 'headerbar.html' %}
-    <h1>Send a Message Below</h1>
-    <h2>Use CTRL+Click to select multiple options.</h2>
+    <div class="text-center page-title">
+        <h1>Send a Message Below</h1>
+        <h2>Use CTRL+Click to select multiple recipients.</h2>
+        <h4>
+            <a href="/findBuddies">View which classmates you share a class with</a>
+        </h4>
+    </div>
+
+    {% load crispy_forms_tags %}
+
+    <div class="text-center page-title">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="container">
+                <div class="form-group row justify-content-md-center">
+                    <div class="col-md-auto align-self-center">
+                        <h2>Recipients:</h2>
+                    </div>
+                    <div class="col-md-auto align-self-center">
+                        {{ form.to|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="form-group row justify-content-md-center">
+                    <div class="col-md-auto align-self-center">
+                        <h2>Message:</h2>
+                    </div>
+                    <div class="col-md-auto align-self-center">
+                        {{ form.message|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+            <!-- {{ form.as_p }} -->
+            <button name="Send" value="Send" class="btn btn-primary">
+                Send
+            </button>
+        </form>
 
 
-<main class="flex-shrink-0">
-    <form method="POST">
+    <!-- <form method="POST">
         {% csrf_token %}
-        <!--<input name="session" />-->
         {{ form.as_p }}
         <input type="submit" value="Send" />
-    </form>
-
-</main>
+    </form> -->
 </body>

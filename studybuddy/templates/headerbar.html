@@ -13,12 +13,17 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" /> -->
 
 <div class="d-flex justify-content-center">
-    <h1 class="display-1 title">Study Buddy</h1>
+    <a class="btn invisible-btn" href="{% url 'home' %}">
+        <h1 class="display-1 title">Study Buddy</h1>
+    </a>
 </div>
 <div>
     <nav class="navbar navbar-expand-sm navbar-light d-flex justify-content-between bg-light">
         <a href="{% url 'home' %}" class="nav-link active links">
             Home
+        </a>
+        <a href="{% url 'aboutUs' %}" class="nav-link active links">
+            About Us
         </a>
         <a href="{% url 'profile' %}" class="nav-link active links">
             Profile
@@ -44,10 +49,18 @@
         <a href="{% url 'calendar' %}" class="nav-link active links">
             Calendar
         </a>
-        <a href="{% url 'logout' %}" class="nav-link active links">
-            Logout
-        </a>
-        <!-- <li class="nav-item dropdown"> -->
+        {% block content %}
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="nav-link active links">
+                    Log out
+                </a>
+            {% else %}
+                <a href="/accounts/login" class="nav-link active links">
+                    Log in or create an account
+                </a>
+            {% endif %}
+        {% endblock %}
+    <!-- <li class="nav-item dropdown"> -->
         <!-- <div class="dropdown show">
             <a class="nav-link active links dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                User: {{ user.username }}

@@ -24,6 +24,7 @@ django-allauth==0.49.0
 django-appconf==1.0.5
 django-bootstrap-v5==1.0.11
 django-bootstrap5==21.3
+django-crispy-forms==1.14.0
 django-heroku==0.3.1
 django-redis==5.2.0
 django-user-accounts==3.2.0

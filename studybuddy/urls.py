@@ -26,6 +26,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('', views.login, name='login'), #EDIT PATHS TO TEMPLATES LATER
     path('home/', views.home, name="home"),
+    path('aboutus/', views.aboutUs, name="aboutUs"),
     path('studysession/', views.session, name="session"),
     path('mysessions/', views.my_sessions, name="my_sessions"),
     path('sendmessage/', views.send_message, name="send_message"),

@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django import forms 
 from django.contrib import messages
@@ -17,14 +18,22 @@ from django.http import JsonResponse
 
 
 def home(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
+    if request.user.is_authenticated and (Profile.objects.filter(user_id=request.user.id)).exists():
+        theUser = Profile.objects.get(user_id = request.user.id)
+        return render(request, 'home.html', {"user" : theUser})
     return render(request, 'home.html')
+
+def aboutUs(request):
+    return render(request, 'aboutUs.html')
+
 
 def login(request):
     if request.user.is_authenticated and not (Profile.objects.filter(user_id=request.user.id)).exists():
+        # theUser = Profile.objects.get(user_id=request.user.id)
+        # theUser.picture = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+        # theUser.save()
         return HttpResponseRedirect(reverse('register'))
-    return render(request, 'index.html')
+    return HttpResponseRedirect(reverse('home'))
 
 
 def register(request):
@@ -84,13 +93,47 @@ def session(request):
     return render(request, 'newSession.html', {'form': form})
 
 def my_sessions(request):
+    showPast = False
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    sessions = StudySession.objects.filter().all().order_by('-created_date')
+    theUser = Profile.objects.get(user_id=request.user.id)
+    allSessions = list(StudySession.objects.filter().all().order_by('created_date'))
+    sessions = []
     
+    if request.method == 'POST':
+        if 'View Past' in request.POST:
+            showPast = True
+        if 'Hide Past' in request.POST:
+            showPast = False
+        if 'Delete' in request.POST:
+            id = request.POST.get('Delete')
+            print(id)
+            try:
+                selectedSession = StudySession.objects.filter(id=id)[0]
+                if selectedSession.creator == theUser.user:
+                    try:
+                        selectedSession.delete()
+                    except:
+                        print('This record does not exist')
+                else:
+                    selectedSession.users.remove(theUser.user)
+            except:
+                print('There is no such session')
+
+
+    # if not showPast:
+    #     for s in allSessions:
+    #         if(s.date >= datetime.now().astimezone().date):
+    #             sessions.append(s)
+    # else:
+    
+    sessions = allSessions
+
+
     sessions_dict = {
-        'sessions': sessions
+        'sessions': sessions,
+        'showPast': showPast,
     }
     return render(request, 'sessions.html', sessions_dict)
 
@@ -171,6 +214,25 @@ def addCourses(request):
         
         if 'Reset Search' in request.POST:
             allCourses = Course.objects.all() 
+
+        else:
+            courseA = ""
+            courseN = ""
+            for courses in allCourses:
+                if(request.POST.get(courses.courseAbbv) and request.POST.get(courses.courseAbbv) == courses.courseNumber):
+                    courseA = courses.courseAbbv
+                    courseN = request.POST.get(courseA)
+            if (Course.objects.filter(courseAbbv=courseA).exists() and Course.objects.filter(courseNumber=courseN).exists()): 
+                if not theUser.courses.filter(courseAbbv=courseA, courseNumber=courseN).exists():
+                    theUser.courses.add(Course.objects.get(courseAbbv=courseA, courseNumber=courseN))
+                else:
+                    dupCourse = True
+                courseValid = True
+                addedSuccess = True
+            else:
+                courseValid = False
+                addedSuccess - False
+                dupCourse = False
             
         print('in post expression')
     else:
@@ -201,6 +263,43 @@ def findBuddies(request):
     if request.method == 'POST':
         if 'Reset Search' in request.POST:
             allProfiles = Profile.objects.all()
+
+        if 'Filter Abbr' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.courses.filter(courseAbbv=request.POST['courseAb']).exists():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
+        if 'Filter Num' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.courses.filter(courseNumber=request.POST['courseNumb']).exists():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
+        if 'Filter Name' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.user.first_name.lower() == request.POST['firstName'].lower():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
+        if 'Filter User' in request.POST:
+            filteredProfiles = []
+            foundBoth = False 
+
+            for each in allProfiles:
+                if each.user.username.lower() == request.POST['user'].lower():
+                    filteredProfiles.append(each)
+            allProfiles = filteredProfiles
+
         
         if 'Find Buddy' in request.POST:
             filteredProfiles = []
@@ -233,16 +332,25 @@ def editProfile(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
+    theUser = Profile.objects.get(user_id=request.user.id)
+
     form = EditProfileForm(request.POST)
     if request.method == 'POST':
         editedProfile = Profile.objects.get(user_id=request.user.id)
-        if form.is_valid():
-            editedProfile.about = form.cleaned_data['about']
-            editedProfile.major = form.cleaned_data['major']
-            editedProfile.save()
-            return HttpResponseRedirect(reverse('profile'))
+        if 'Update' in request.POST:
+            if form.is_valid():
+                editedProfile.about = form.cleaned_data['about']
+                editedProfile.major = form.cleaned_data['major']
+                editedProfile.save()
+                return HttpResponseRedirect(reverse('profile'))
+        else:
+            print(request.POST)
+            for x in editedProfile.courses.all():
+                if(request.POST.get(x.courseAbbv) and request.POST.get(x.courseAbbv) == x.courseNumber):
+                    editedProfile.courses.remove(x)
    
     context = {
-        'form': form
+        'form': form,
+        'user': theUser
     }
     return render(request, 'editProfile.html', context)

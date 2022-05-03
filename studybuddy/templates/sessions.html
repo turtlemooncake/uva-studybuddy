@@ -1,49 +1,106 @@
 <!DOCTYPE html>
+{% load static %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
 
+<!-- https://stackoverflow.com/questions/48682982/django-cannot-find-static-css-files-error-404 -->
+<head>
+    <link rel="stylesheet" href="{% static 'studybuddy/styles/App.css' %}">
+    <title>
+        Your Sessions
+    </title>
+</head>
+
 <body>
     {% include 'headerbar.html' %}
-<html lang="en">
-{%if sessions.exists%}
-{%for session in sessions%}
-
-{% if user.username == session.creator.username %}
-<div>
-    <h2>From: {{ user.username }}</h2>
-    <h2>To: </h2>
-    {% for i in session.users.all %}
-    <h3>
-        {{i.username}}
-    </h3>
-    {% endfor %}
-<h2> Date: <h3>{{ session.date }}</h3></h2>
-<h2> Time: <h3>{{ session.time }}</h3></h2>
-<h2> Location: <h3>{{ session.location }}</h3></h2>
-<h2> Subject: <h3>{{ session.subject }}</h3></h2>
-<h2> Created Date: <h3>{{ session.created_date }}</h3></h2>
+    <div class="text-center page-title">
+        <h1>All of Your Sessions!</h1>
+        <!-- {%if not showPast%}
+            <h1>Your Upcoming Sessions!</h1>
+        {%elif showPast%}
+            <h1>All of Your Sessions!</h1>
+        {%endif%} -->
+    </div>
+    <!-- <form method="POST" class="form-inline spacer justify-content-center text-center">
+        {% csrf_token %}
+        {%if not showPast%}
+            <button class="btn btn-primary mb-2" type="submit" value="View Past" name="View Past">
+                View Past Sessions
+            </button>
+        {%elif showPast%}
+            <button class="btn btn-primary mb-2" type="submit" value="Hide Past" name="Hide Past">
+                Hide Past Sessions
+            </button>
+        {%endif%}
+    </form> -->
+    
+    {%if sessions%}
+        <form method="POST">
+            {%csrf_token%}
+            <div class="container">
+                <div class="row">
+                    {%for session in sessions%}
+                        {% if user.username == session.creator.username %}
+                            <div class="col">
+                                <div class="card" style="width: 36rem;">
+                                    <div class="card-body justify-content-center text-center">
+                                        <h2 class="card-title subheader">Time: {{ session.date }} , {{ session.time }}</h2>
+                                        <h4 class="card-subtitle mb-2 text-muted subheader">Creator: {{ user.username }}</h4>
+                                        <h4 class="card-subtitle mb-2 text-muted subheader">Location: {{ session.location }}</h4>
+                                        <h4 class="card-subtitle mb-2 text-muted subheader">Subject: {{ session.subject }}</h4>
+                                        <div class="card-header subheader">
+                                            Participants:
+                                        </div> 
+                                        <ul class="list-group list-group-flush spacer">   
+                                            {% for i in session.users.all %}
+                                                <li class="list-group-item subheader spacer">{{i.username}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <footer class="subheader">
+                                            <button class="btn btn-danger" name="Delete" value={{session.id}} type="submit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                                </svg>            
+                                            </button>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                        {% elif user in session.users.all %}
+                            <div class="col">
+                                <div class="card" style="width: 36rem;">
+                                    <div class="card-body justify-content-center text-center">
+                                        <h2 class="card-title subheader">Time: {{ session.date }}, {{ session.time }}</h2>
+                                        <h4 class="card-subtitle mb-2 text-muted subheader">Creator: {{ session.creator.username }}</h4>
+                                        <h4 class="card-subtitle mb-2 text-muted subheader">Location: {{ session.location }}</h4>
+                                        <h4 class="card-subtitle mb-2 text-muted subheader">Subject: {{ session.subject }}</h4>
+                                        <div class="card-header subheader">
+                                            Participants:
+                                        </div> 
+                                        <ul class="list-group list-group-flush spacer">   
+                                            {% for i in session.users.all %}
+                                                <li class="list-group-item subheader spacer">{{i.username}}</li>
+                                            {% endfor %}
+                                            <li class="list-group-item subheader spacer">{{session.creator.username}}</li>
+                                        </ul>
+                                        <footer class="subheader">
+                                            <button class="btn btn-danger" name="Delete" value={{session.id}} type="submit">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                                </svg>            
+                                            </button>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+        </form>
+    {%else%}
+        <h2 class="subheader text-center">No Study Sessions Found!</h2>
+    {%endif%}
 </body>
-</div>
-{% elif user in session.users.all %}
-<div>
-    <h2>From: {{ session.creator.username }}</h2>
-    <h2>To: </h2>
-    {% for i in session.users.all %}
-    <h3>
-        {{i.username}}
-    </h3>
-    {% endfor %}
-<h2> Date: <h3>{{ session.date }}</h3></h2>
-<h2> Time: <h3>{{ session.time }}</h3></h2>
-<h2> Location: <h3>{{ session.location }}</h3></h2>
-<h2> Subject: <h3>{{ session.subject }}</h3></h2>
-<h2> Created Date: <h3>{{ session.created_date }}</h3></h2>
-</body>
-</div>
-{%endif%}
-
-{%endfor%}
-
-{%else%}
-    <h1>No Study Sessions Found!</h1>
-{%endif%}

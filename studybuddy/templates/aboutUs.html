@@ -1,0 +1,85 @@
+<!doctype html>
+{% load static %}
+
+<!-- I don't know what these links do but the header won't work without them -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- https://stackoverflow.com/questions/48682982/django-cannot-find-static-css-files-error-404 -->
+<head>
+    <link rel="stylesheet" href="{% static 'studybuddy/styles/App.css' %}">
+    <title>
+        About Us
+    </title>
+</head>
+
+
+<body>
+    {% include 'headerbar.html' %}
+    <div class="text-center">
+        <div class="page-title display-1">
+            About Us!
+            <h2 class="subheader">
+                What is Study Buddy?
+            </h2>
+            <div class="page-text">
+                <p>
+                    Study Buddy is a website inspired by a CS 3240 project prompt. This site is meant to help you find 
+                    like-mided students taking the same classes as you, and provide you with an easy and convenient way 
+                    to connect with them to form study groups
+                </p>
+            </div>
+        </div>
+
+        <h2 class="subheader">
+            Our Team!
+        </h2>
+        <div class="card-group">
+            <div class="card h-100">
+                <img class="card-img-top" src="https://cs3240-b06.s3.amazonaws.com/Shriman.JPG" alt="Mike" >
+                <div class="card-body">
+                    <h2 class="card-title">Shriman Selvamani</h2>
+                    <h4 class="card-text">Scrum Master</h4>
+                    <p class="card-text">Shriman is a student at UVA studying CS</p>
+                    <p class="card-text">Contact him at: ss5qt@virginia.edu</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class = "card-img-top" src="https://cs3240-b06.s3.amazonaws.com/Victoria.JPG" alt="John">
+                <div class="card-body">
+                    <h2 class="card-title">Alice Nolan</h2>
+                    <h4 class="card-text">Requirements Manager</h4>
+                    <p class="card-text">Alice is a student at UVA studying CS</p>
+                    <p class="card-text">Contact her at: akn7hgq@virginia.edu</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class = "card-img-top" src="https://cs3240-b06.s3.amazonaws.com/Victoria.JPG" alt="John">
+                <div class="card-body">
+                    <h2 class="card-title">Danish Chauhan</h2>
+                    <h4 class="card-text">Testing Manager</h4>
+                    <p class="card-text">Danish is a student at UVA studying CS</p>
+                    <p class="card-text">Contact him at: dic2fx@virginia.edu</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class = "card-img-top" src="https://cs3240-b06.s3.amazonaws.com/Victoria.JPG" alt="John">
+                <div class="card-body">
+                    <h2 class="card-title">Victoria Li</h2>
+                    <h4 class="card-text">DevOps Manager</h4>
+                    <p class="card-text">Victoria is a third year studying CS and Comm</p>
+                    <p class="card-text">Contact her at: vml8gj@virginia.edu</p>
+                </div>
+            </div>
+            <div class="card h-100">
+                <img class="card-img-top" src="https://cs3240-b06.s3.amazonaws.com/Mihir.JPG" alt="Mihir">
+                <div class="card-body">
+                    <h2 class="card-title">Mihir Prahlad</h2>
+                    <h4 class="card-text">UX Designer</h4>
+                    <p class="card-text">Mihir Prahlad is a third year studying CS and Econ.</p>
+                    <p class="card-text">Contact him at: mp8dy@virginia.edu</p>
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>

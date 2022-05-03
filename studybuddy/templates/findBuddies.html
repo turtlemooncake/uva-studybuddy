@@ -7,29 +7,93 @@
 <!-- https://stackoverflow.com/questions/48682982/django-cannot-find-static-css-files-error-404 -->
 <head>
     <link rel="stylesheet" href="{% static 'studybuddy/styles/App.css' %}">
+    <title>
+        Find Buddies
+    </title>
 </head>
-
 
 <body>
     {% include 'headerbar.html' %}
-    <h1>Find Buddies</h1>
-    <form method="POST">
+    <div class="text-center page-title">
+        <h1>Find Buddies</h1>
+    </div>
+
+    <form method="POST" class="form-inline spacer justify-content-center text-center">
         {% csrf_token %}
-        Course Abbreviation: <input name="courseAb" />
-        Course Number: <input name="courseNumb" />
-        <input type="submit" value="Filter Buddies" name="Find Buddy" />
-        <input type="submit" value="Reset Search" name="Reset Search" />
+        <div class="form-group mx-sm-3 mb-2 subheader spacer justify-content-center text-center">
+            <label class="mb-2">
+                Course Abbreviation: 
+                <input class="form-control mb-2" type="text" name="courseAb" />
+            </label>
+            <button class="btn btn-primary mb-2" type="submit" value="Filter Abbr" name="Filter Abbr">
+                Filter by course abbreviation
+            </button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 subheader spacer justify-content-center text-center">
+            <label class="mb-2">
+                Course Number: 
+                <input class="form-control mb-2" type="text" name="courseNumb" />
+            </label>
+            <button class="btn btn-primary mb-2" type="submit" value="Filter Num" name="Filter Num">
+                Filter by course number
+            </button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 subheader spacer justify-content-center text-center">
+            <button class="btn btn-success mb-2" type="submit" value="Filter Buddies" name="Find Buddy">
+                Filter both
+            </button>
+            <button class="btn btn-danger mb-2" type="submit" value="Reset Search" name="Reset Search">
+                Reset Search
+            </button>
+        </div>
     </form>
-    <div class="d-flex justify-content-center">
-        <ul>
+    <form method="POST" class="form-inline spacer justify-content-center text-center">
+        {% csrf_token %}
+        <div class="form-group mx-sm-3 mb-2 subheader spacer justify-content-center text-center">
+            <label class="mb-2">
+                First Name: 
+                <input class="form-control mb-2" type="text" name="firstName" />
+            </label>
+            <button class="btn btn-primary mb-2" type="submit" value="Filter Name" name="Filter Name">
+                Filter by first name
+            </button>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 subheader spacer justify-content-center text-center">
+            <label class="mb-2">
+                Username: 
+                <input class="form-control mb-2" type="text" name="user" />
+            </label>
+            <button class="btn btn-primary mb-2" type="submit" value="Filter User" name="Filter User">
+                Filter by Username
+            </button>
+        </div>
+    </form>
+
+    <div class="container">
+        <div class="row">
             {% for buddy in allProfiles %} <!--this is name of context_object_name from the dplist view-->
-            <li>
-                {{buddy.user.username}}, {{buddy.about}}, {{buddy.major}} Classes:
-                {% for i in buddy.courses.all %}
-                    {{i.courseAbbv}} {{i.courseNumber}}, 
-                {% endfor %}
-            </li>
+                <!-- <ul> -->
+                    <div class="col">                    
+                        <div class="card" style="width: 36rem;">
+                            <div class="card-body justify-content-center text-center">
+                                <h2 class="card-title subheader">{{buddy.user.username}}</h2>
+                                <h4 class="card-subtitle mb-2 text-muted subheader">First Name: ({{buddy.user.first_name}})</h4>
+                                <h4 class="card-subtitle mb-2 text-muted subheader">{{buddy.major}} Major(s)</h4>
+                                <h5 class="card-subtitle mb-2 text-muted subheader">(Email: {{buddy.user.email}})</h5>
+                                <p class="card-text subheader">About {{buddy.user}}: {{buddy.about}}</p>
+                                <div class="card-header subheader">
+                                    {{buddy.user}}'s Courses:
+                                </div>
+                                <ul class="list-group list-group-flush spacer">
+                                    {% for i in buddy.courses.all %}
+                                        <li class="list-group-item subheader spacer">{{i.courseAbbv}} {{i.courseNumber}}</li>
+                                    {% endfor %}    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </ul> -->
             {% endfor %}
-        </ul> 
+        </div>
     </div>
 </body>
