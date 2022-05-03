@@ -104,7 +104,7 @@ def session(request):
             new_session.end_date = request.POST.get('end_date')
             new_session.save()
 
-            users = Profile.objects.filter().all()
+            users = list(Profile.objects.filter().all())
             emails = []
             for member in new_session.users:
                 for person in Profile:
