@@ -18,6 +18,10 @@ class MessageForm(ModelForm):
     class Meta:
         model = MessageTwo
         fields = ['to', 'message']
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False 
 
 class EditProfileForm(ModelForm):
     class Meta:
