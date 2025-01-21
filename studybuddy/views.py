@@ -124,18 +124,12 @@ def session(request):
                     'description': 'Let\'s work together on this class!',
                     'start': {
                         'dateTime': new_session.created_date[0:10] + 'T' + new_session.created_date[11:19] + '-07:00',
-                        # 'dateTime': new_session.created_date.strftime("%Y-%m-%dT%H:%M:%S"),
                         'timeZone': 'America/New_York',
                     },
                     'end': {
                         'dateTime': new_session.end_date[0:10] + 'T' + new_session.end_date[11:19] + '-07:00',
-                        # 'dateTime': '2022-05-28T17:00:00-07:00',
                         'timeZone': 'America/New_York',
                     },
-                    # 'attendees': [
-                    #     {'email': 'lpage@example.com'},
-                    #     {'email': 'sbrin@example.com'},
-                    # ],
                     'attendees': names,
                     'reminders': {
                         'useDefault': False,
@@ -145,8 +139,6 @@ def session(request):
                         ],
                     },
                 }
-                #service.events().insert(calendarId=calendar_id, body=event).execute()
-                # print('Event created: %s' % (event.get('htmlLink')))
                 return HttpResponseRedirect(reverse('my_sessions'))
 
     else:

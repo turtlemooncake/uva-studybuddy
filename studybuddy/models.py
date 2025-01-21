@@ -35,8 +35,3 @@ class Course(models.Model):
     def __str__(self):
         return self.courseAbbv
 
-
-# class Event(models.Model):
-#     date = models.DateField()
-#     partners = models.ManyToManyField('User', blank=True)
-

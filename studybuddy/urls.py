@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('register/', views.register, name='register'),
-    path('', views.login, name='login'), #EDIT PATHS TO TEMPLATES LATER
+    path('', views.login, name='login'), 
     path('home/', views.home, name="home"),
     path('aboutus/', views.aboutUs, name="aboutUs"),
     path('studysession/', views.session, name="session"),
