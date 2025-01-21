@@ -137,8 +137,7 @@ GitHub.sublime-settings
 .history
 
 # Misc
-.github
-.idea
-.vscode
+.github/*
+.idea/*
 virtual/
 credentials.json
